@@ -1,0 +1,1750 @@
+/* =====================================================
+   CSS VARIABLES & THEMES
+   ===================================================== */
+:root {
+    --primary-light: #e8e0f0;
+    --primary: #9b7bb8;
+    --primary-dark: #7a5a9a;
+    --accent: #b794d4;
+    --background-start: #f5f0fa;
+    --background-end: #e8dff5;
+    --text-primary: #4a3a5c;
+    --text-secondary: #7a6a8c;
+    --white: #ffffff;
+    --shadow: rgba(155, 123, 184, 0.2);
+    --glow: rgba(155, 123, 184, 0.4);
+    --success: #7ab87a;
+    --success-dark: #5a985a;
+    --warning: #e8a87c;
+    --warning-dark: #d4825a;
+    
+    --font-modern: 'Quicksand', sans-serif;
+    --font-digital: 'Orbitron', sans-serif;
+    --font-elegant: 'Playfair Display', serif;
+    --font-mono: 'Space Mono', monospace;
+    --font-bold: 'Bebas Neue', cursive;
+    --font-handwritten: 'Pacifico', cursive;
+    --font-code: 'JetBrains Mono', monospace;
+    --font-display: 'Righteous', cursive;
+}
+
+/* Theme variations */
+[data-theme="ocean"] {
+    --primary-light: #d0e8f2;
+    --primary: #5a9bbd;
+    --primary-dark: #3a7a9a;
+    --accent: #79c2d4;
+    --background-start: #e8f4f8;
+    --background-end: #d0e8f2;
+    --text-primary: #2a4a5c;
+    --text-secondary: #5a7a8c;
+    --shadow: rgba(90, 155, 189, 0.2);
+    --glow: rgba(90, 155, 189, 0.4);
+}
+
+[data-theme="forest"] {
+    --primary-light: #d4e8d4;
+    --primary: #6b9b6b;
+    --primary-dark: #4a7a4a;
+    --accent: #8bc48b;
+    --background-start: #f0f8f0;
+    --background-end: #e0f0e0;
+    --text-primary: #2a4a2a;
+    --text-secondary: #5a7a5a;
+    --shadow: rgba(107, 155, 107, 0.2);
+    --glow: rgba(107, 155, 107, 0.4);
+}
+
+[data-theme="sunset"] {
+    --primary-light: #fde8d8;
+    --primary: #e8a87c;
+    --primary-dark: #d4825a;
+    --accent: #f0c4a0;
+    --background-start: #fff5f0;
+    --background-end: #fde8d8;
+    --text-primary: #5c3a2a;
+    --text-secondary: #8c6a5a;
+    --shadow: rgba(232, 168, 124, 0.2);
+    --glow: rgba(232, 168, 124, 0.4);
+}
+
+[data-theme="rose"] {
+    --primary-light: #fce4ec;
+    --primary: #e91e63;
+    --primary-dark: #c2185b;
+    --accent: #f48fb1;
+    --background-start: #fdf2f5;
+    --background-end: #fce4ec;
+    --text-primary: #4a2a3a;
+    --text-secondary: #8a5a6a;
+    --shadow: rgba(233, 30, 99, 0.15);
+    --glow: rgba(233, 30, 99, 0.3);
+}
+
+[data-theme="midnight"] {
+    --primary-light: #3a3a5c;
+    --primary: #6a6aaa;
+    --primary-dark: #4a4a8a;
+    --accent: #8a8acc;
+    --background-start: #1a1a2e;
+    --background-end: #16213e;
+    --text-primary: #e8e8f0;
+    --text-secondary: #a8a8c0;
+    --white: #2a2a4a;
+    --shadow: rgba(106, 106, 170, 0.3);
+    --glow: rgba(106, 106, 170, 0.5);
+}
+
+[data-theme="lavender"] {
+    --primary-light: #e6e6fa;
+    --primary: #9370db;
+    --primary-dark: #7b68ee;
+    --accent: #b19cd9;
+    --background-start: #f8f0ff;
+    --background-end: #e6e6fa;
+    --text-primary: #4b0082;
+    --text-secondary: #6a5acd;
+    --shadow: rgba(147, 112, 219, 0.2);
+    --glow: rgba(147, 112, 219, 0.4);
+}
+
+[data-theme="mint"] {
+    --primary-light: #d1f2eb;
+    --primary: #1abc9c;
+    --primary-dark: #16a085;
+    --accent: #48c9b0;
+    --background-start: #e8f8f5;
+    --background-end: #d1f2eb;
+    --text-primary: #0e4a3a;
+    --text-secondary: #1e8a7a;
+    --shadow: rgba(26, 188, 156, 0.2);
+    --glow: rgba(26, 188, 156, 0.4);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-modern);
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--background-start) 0%, var(--background-end) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-x: hidden;
+}
+
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.particle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: var(--primary);
+    border-radius: 50%;
+    opacity: 0.1;
+    animation: float 15s infinite ease-in-out;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% { opacity: 0.15; }
+    90% { opacity: 0.15; }
+    100% {
+        transform: translateY(-100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+body.fullscreen {
+    padding: 0;
+    align-items: stretch;
+}
+
+/* =====================================================
+   MAIN CONTAINER
+   ===================================================== */
+.container {
+    background: var(--white);
+    border-radius: 30px;
+    padding: 35px;
+    box-shadow: 0 20px 60px var(--shadow);
+    max-width: 540px;
+    width: 100%;
+    text-align: center;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    z-index: 1;
+    animation: containerEntry 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes containerEntry {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* =====================================================
+   FULLSCREEN LAYOUT FIX
+   ===================================================== */
+body.fullscreen .container {
+    max-width: 100%;
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 40px 60px;
+    overflow-y: auto;
+    gap: 15px;
+}
+
+body.fullscreen .header {
+    flex-shrink: 0;
+    margin-bottom: 10px;
+}
+
+body.fullscreen .mode-tabs {
+    flex-shrink: 0;
+}
+
+body.fullscreen .trip-tracker,
+body.fullscreen .stopwatch-tracker {
+    flex-shrink: 0;
+    max-width: 600px;
+    width: 100%;
+}
+
+body.fullscreen .timer-display {
+    flex-shrink: 0;
+    margin: 20px 0;
+}
+
+body.fullscreen .timer-circle {
+    width: 300px;
+    height: 300px;
+}
+
+body.fullscreen .timer-circle::before {
+    width: 320px;
+    height: 320px;
+}
+
+body.fullscreen .timer-circle::after {
+    width: 340px;
+    height: 340px;
+}
+
+body.fullscreen .timer-digits {
+    font-size: 4.5rem;
+}
+
+body.fullscreen .timer-digits.style-bold {
+    font-size: 5rem;
+}
+
+body.fullscreen .timer-digits.style-handwritten {
+    font-size: 3.8rem;
+}
+
+body.fullscreen .input-section {
+    flex-shrink: 0;
+    max-width: 500px;
+    width: 100%;
+}
+
+body.fullscreen .button-group {
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 600px;
+}
+
+body.fullscreen .lap-times-container {
+    max-width: 500px;
+    width: 100%;
+    max-height: 200px;
+}
+
+body.fullscreen .settings-panel {
+    flex-shrink: 0;
+    max-width: 500px;
+    width: 100%;
+    margin-top: auto;
+    padding-top: 20px;
+}
+
+/* Ensure SVG scales properly in fullscreen */
+body.fullscreen .progress-ring {
+    width: 100%;
+    height: 100%;
+}
+
+/* =====================================================
+   HEADER & TITLES
+   ===================================================== */
+.header {
+    margin-bottom: 20px;
+}
+
+.title {
+    font-size: 1.8rem;
+    color: var(--text-primary);
+    font-weight: 500;
+    margin-bottom: 5px;
+    transition: all 0.4s ease;
+}
+
+.subtitle {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    font-weight: 300;
+    animation: fadeInUp 0.6s ease 0.2s both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.mode-indicator {
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-top: 12px;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: indicatorGlow 2s ease-in-out infinite;
+}
+
+@keyframes indicatorGlow {
+    0%, 100% { box-shadow: 0 0 10px var(--shadow); }
+    50% { box-shadow: 0 0 20px var(--glow); }
+}
+
+.mode-indicator.focus {
+    background: linear-gradient(135deg, var(--primary-light), var(--accent));
+    color: var(--text-primary);
+}
+
+.mode-indicator.break {
+    background: linear-gradient(135deg, #d4e7d4, #a8d4a8);
+    color: #3a5c3a;
+}
+
+.mode-indicator.stopwatch {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+}
+
+.mode-indicator.stopwatch-break {
+    background: linear-gradient(135deg, var(--success), var(--success-dark));
+    color: white;
+}
+
+/* =====================================================
+   MODE TABS
+   ===================================================== */
+.mode-tabs {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+    animation: fadeInUp 0.6s ease 0.25s both;
+}
+
+.mode-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border: 2px solid var(--primary-light);
+    border-radius: 15px;
+    background: var(--white);
+    color: var(--text-secondary);
+    font-family: var(--font-modern);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.mode-tab:hover {
+    border-color: var(--primary);
+    color: var(--text-primary);
+}
+
+.mode-tab.active {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-color: var(--primary);
+    color: white;
+}
+
+.mode-tab svg {
+    transition: transform 0.3s ease;
+}
+
+.mode-tab:hover svg {
+    transform: scale(1.1);
+}
+
+/* =====================================================
+   TRIP/SESSION TRACKER - FIXED FOR ALL THEMES
+   ===================================================== */
+.trip-tracker {
+    background: linear-gradient(135deg, var(--primary-light), var(--accent));
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 25px;
+    animation: fadeInUp 0.6s ease 0.3s both;
+}
+
+/* Stopwatch tracker uses the SAME theme colors */
+.trip-tracker.stopwatch-tracker {
+    background: linear-gradient(135deg, var(--primary-light), var(--accent));
+}
+
+/* Stopwatch break mode tracker - use success colors for break */
+.trip-tracker.stopwatch-tracker.on-break {
+    background: linear-gradient(135deg, var(--success), var(--success-dark));
+}
+
+.trip-tracker.stopwatch-tracker.on-break .trip-title,
+.trip-tracker.stopwatch-tracker.on-break .trip-stat-value,
+.trip-tracker.stopwatch-tracker.on-break .trip-stat-label {
+    color: white;
+}
+
+.trip-tracker.stopwatch-tracker.on-break .trip-count {
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--success-dark);
+}
+
+/* Ensure text visibility in all themes */
+.trip-tracker .trip-title,
+.trip-tracker .trip-stat-value,
+.trip-tracker .trip-stat-label,
+.stopwatch-tracker .trip-title,
+.stopwatch-tracker .trip-stat-value,
+.stopwatch-tracker .trip-stat-label {
+    color: var(--text-primary);
+}
+
+.trip-tracker .trip-count,
+.stopwatch-tracker .trip-count {
+    background: var(--white);
+    color: var(--primary-dark);
+}
+
+/* Midnight theme specific fixes */
+[data-theme="midnight"] .trip-tracker,
+[data-theme="midnight"] .trip-tracker.stopwatch-tracker {
+    background: linear-gradient(135deg, var(--primary-light), var(--accent));
+}
+
+[data-theme="midnight"] .trip-tracker .trip-title,
+[data-theme="midnight"] .trip-tracker .trip-stat-value,
+[data-theme="midnight"] .trip-tracker .trip-stat-label {
+    color: var(--text-primary);
+}
+
+[data-theme="midnight"] .trip-count {
+    background: var(--white);
+    color: var(--accent);
+}
+
+/* Break timer display in stopwatch */
+.break-timer-info {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    padding: 10px 15px;
+    margin-top: 10px;
+    display: none;
+}
+
+.break-timer-info.show {
+    display: block;
+}
+
+.break-timer-info span {
+    font-size: 0.85rem;
+    color: var(--text-primary);
+}
+
+.break-timer-info strong {
+    color: var(--success-dark);
+}
+
+.trip-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.trip-title {
+    font-size: 1rem;
+    color: var(--text-primary);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.trip-count {
+    background: var(--white);
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    color: var(--primary-dark);
+    font-weight: 600;
+    box-shadow: 0 2px 10px var(--shadow);
+}
+
+.trip-progress-container {
+    margin-bottom: 15px;
+}
+
+.trip-progress-bar {
+    height: 12px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.trip-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+    border-radius: 10px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.trip-progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    100% { left: 100%; }
+}
+
+.trip-dots {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding: 0 5px;
+}
+
+.trip-dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    border: 2px solid var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+}
+
+.trip-dot.completed {
+    background: var(--success);
+    border-color: var(--success-dark);
+    color: white;
+    transform: scale(1.1);
+    animation: dotComplete 0.5s ease;
+}
+
+@keyframes dotComplete {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1.1); }
+}
+
+.trip-dot.current {
+    background: var(--primary);
+    border-color: var(--primary-dark);
+    color: white;
+    animation: currentPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes currentPulse {
+    0%, 100% { box-shadow: 0 0 0 0 var(--glow); }
+    50% { box-shadow: 0 0 0 8px transparent; }
+}
+
+.trip-dot:hover {
+    transform: scale(1.15);
+}
+
+.trip-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.trip-stat {
+    text-align: center;
+}
+
+.trip-stat-value {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.trip-stat-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+/* =====================================================
+   TIMER DISPLAY
+   ===================================================== */
+.timer-display {
+    margin: 25px 0;
+    position: relative;
+}
+
+.timer-circle {
+    width: 250px;
+    height: 250px;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: circleEntry 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both;
+}
+
+@keyframes circleEntry {
+    from {
+        opacity: 0;
+        transform: scale(0.8) rotate(-10deg);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+.timer-circle::before,
+.timer-circle::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    border: 2px dashed var(--primary-light);
+    animation: spinSlow 30s linear infinite;
+}
+
+.timer-circle::before {
+    width: 270px;
+    height: 270px;
+    opacity: 0.3;
+}
+
+.timer-circle::after {
+    width: 290px;
+    height: 290px;
+    opacity: 0.2;
+    animation-direction: reverse;
+    animation-duration: 45s;
+}
+
+@keyframes spinSlow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.progress-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+    filter: drop-shadow(0 0 10px var(--glow));
+}
+
+.progress-ring-bg {
+    fill: none;
+    stroke: var(--primary-light);
+    stroke-width: 8;
+    transition: stroke 0.4s ease;
+}
+
+.progress-ring-fill {
+    fill: none;
+    stroke: var(--primary);
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 723;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0.5s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.4s ease;
+}
+
+.progress-ring-fill.break {
+    stroke: var(--success);
+}
+
+/* Stopwatch uses theme primary color */
+.progress-ring-fill.stopwatch {
+    stroke: var(--primary);
+}
+
+/* Stopwatch break uses success color */
+.progress-ring-fill.stopwatch-break {
+    stroke: var(--success);
+}
+
+.timer-circle.running .progress-ring-fill {
+    filter: drop-shadow(0 0 8px var(--primary));
+    animation: ringPulse 2s ease-in-out infinite;
+}
+
+@keyframes ringPulse {
+    0%, 100% { filter: drop-shadow(0 0 8px var(--glow)); }
+    50% { filter: drop-shadow(0 0 15px var(--glow)); }
+}
+
+.timer-content {
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.timer-digits {
+    font-size: 3.5rem;
+    color: var(--text-primary);
+    letter-spacing: 2px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    text-shadow: 0 2px 10px var(--shadow);
+}
+
+.timer-digits.tick {
+    animation: tick 0.3s ease;
+}
+
+@keyframes tick {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+}
+
+.timer-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 5px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Font style variations */
+.timer-digits.style-modern { font-family: var(--font-modern); font-weight: 300; }
+.timer-digits.style-digital { font-family: var(--font-digital); font-weight: 400; letter-spacing: 4px; }
+.timer-digits.style-elegant { font-family: var(--font-elegant); font-weight: 400; font-style: italic; }
+.timer-digits.style-mono { font-family: var(--font-mono); font-weight: 400; letter-spacing: 0; }
+.timer-digits.style-bold { font-family: var(--font-bold); font-weight: 400; letter-spacing: 6px; font-size: 4rem; }
+.timer-digits.style-handwritten { font-family: var(--font-handwritten); font-weight: 400; font-size: 3rem; }
+.timer-digits.style-code { font-family: var(--font-code); font-weight: 500; letter-spacing: 2px; }
+.timer-digits.style-display { font-family: var(--font-display); font-weight: 400; letter-spacing: 3px; }
+
+/* =====================================================
+   LAP TIMES CONTAINER
+   ===================================================== */
+.lap-times-container {
+    background: var(--primary-light);
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 20px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.lap-times-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.clear-laps-btn {
+    padding: 5px 12px;
+    border: none;
+    border-radius: 10px;
+    background: var(--white);
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.clear-laps-btn:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.lap-times-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.lap-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: var(--white);
+    border-radius: 10px;
+    font-size: 0.85rem;
+}
+
+.lap-number {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.lap-time {
+    color: var(--primary);
+    font-weight: 600;
+    font-family: var(--font-mono);
+}
+
+.lap-diff {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+}
+
+/* =====================================================
+   INPUT CONTROLS
+   ===================================================== */
+.input-section {
+    margin: 20px 0;
+    transition: all 0.4s ease;
+    animation: fadeInUp 0.6s ease 0.4s both;
+}
+
+.input-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.4s ease;
+}
+
+.input-group.hidden {
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+    position: absolute;
+}
+
+.input-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
+}
+
+.time-input {
+    width: 80px;
+    padding: 12px 15px;
+    border: 2px solid var(--primary-light);
+    border-radius: 15px;
+    font-size: 1.1rem;
+    font-family: var(--font-modern);
+    color: var(--text-primary);
+    text-align: center;
+    transition: all 0.3s ease;
+    background: var(--white);
+}
+
+.time-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 20px var(--shadow);
+    transform: scale(1.05);
+}
+
+.input-hint {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+/* Trip count input */
+.trip-input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--primary-light);
+    padding: 10px 15px;
+    border-radius: 15px;
+    margin-top: 10px;
+}
+
+.trip-input-label {
+    font-size: 0.85rem;
+    color: var(--text-primary);
+}
+
+.trip-input {
+    width: 60px;
+    padding: 8px;
+    border: 2px solid var(--accent);
+    border-radius: 10px;
+    font-size: 1rem;
+    text-align: center;
+    background: var(--white);
+    color: var(--text-primary);
+    font-family: var(--font-modern);
+}
+
+.trip-input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+/* =====================================================
+   BUTTONS
+   ===================================================== */
+.button-group {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    animation: fadeInUp 0.6s ease 0.5s both;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 25px;
+    font-family: var(--font-modern);
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: var(--white);
+    box-shadow: 0 8px 25px var(--shadow);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 35px var(--shadow);
+}
+
+.btn-primary:active {
+    transform: translateY(-1px) scale(0.98);
+}
+
+/* Stopwatch button uses same theme colors */
+.btn-stopwatch {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+}
+
+.btn-secondary {
+    background: var(--primary-light);
+    color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+    background: var(--accent);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.btn-break {
+    background: linear-gradient(135deg, var(--success), var(--success-dark));
+    color: white;
+    box-shadow: 0 8px 25px rgba(122, 184, 122, 0.3);
+}
+
+.btn-break:hover {
+    transform: translateY(-3px) scale(1.02);
+}
+
+.btn-skip {
+    background: linear-gradient(135deg, #ffa726, #f57c00);
+    color: white;
+    box-shadow: 0 8px 25px rgba(255, 167, 38, 0.3);
+}
+
+.btn-skip:hover {
+    transform: translateY(-3px) scale(1.02);
+}
+
+.btn-lap {
+    background: linear-gradient(135deg, var(--accent), var(--primary));
+    color: white;
+    box-shadow: 0 8px 25px var(--shadow);
+}
+
+.btn-lap:hover {
+    transform: translateY(-3px) scale(1.02);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.btn:disabled::before {
+    display: none;
+}
+
+.btn.pulse-active {
+    animation: buttonPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes buttonPulse {
+    0%, 100% { 
+        transform: scale(1);
+        box-shadow: 0 8px 25px rgba(122, 184, 122, 0.3);
+    }
+    50% { 
+        transform: scale(1.05);
+        box-shadow: 0 12px 40px rgba(122, 184, 122, 0.5);
+    }
+}
+
+/* =====================================================
+   SETTINGS PANELS
+   ===================================================== */
+.settings-panel {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--primary-light);
+    transition: border-color 0.3s ease;
+}
+
+.settings-title {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.settings-title:hover {
+    color: var(--primary);
+}
+
+.settings-title svg {
+    transition: transform 0.3s ease;
+}
+
+.settings-title.open svg {
+    transform: rotate(180deg);
+}
+
+.settings-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.settings-content.open {
+    max-height: 500px;
+}
+
+.settings-row {
+    margin-bottom: 20px;
+}
+
+.settings-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    display: block;
+}
+
+.theme-options {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.theme-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.theme-btn:hover {
+    transform: scale(1.15);
+}
+
+.theme-btn.active {
+    border-color: var(--text-primary);
+    transform: scale(1.1);
+}
+
+.theme-btn[data-theme="violet"] { background: linear-gradient(135deg, #9b7bb8, #7a5a9a); }
+.theme-btn[data-theme="ocean"] { background: linear-gradient(135deg, #5a9bbd, #3a7a9a); }
+.theme-btn[data-theme="forest"] { background: linear-gradient(135deg, #6b9b6b, #4a7a4a); }
+.theme-btn[data-theme="sunset"] { background: linear-gradient(135deg, #e8a87c, #d4825a); }
+.theme-btn[data-theme="rose"] { background: linear-gradient(135deg, #e91e63, #c2185b); }
+.theme-btn[data-theme="midnight"] { background: linear-gradient(135deg, #3a3a5c, #1a1a2e); }
+.theme-btn[data-theme="lavender"] { background: linear-gradient(135deg, #9370db, #7b68ee); }
+.theme-btn[data-theme="mint"] { background: linear-gradient(135deg, #1abc9c, #16a085); }
+
+.style-options {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.style-btn {
+    padding: 6px 12px;
+    border: 2px solid var(--primary-light);
+    border-radius: 10px;
+    background: var(--white);
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.style-btn:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.style-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+/* =====================================================
+   FLOATING BUTTONS
+   ===================================================== */
+.floating-buttons {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 100;
+}
+
+.float-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--white);
+    border: none;
+    box-shadow: 0 4px 15px var(--shadow);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: floatBtnEntry 0.5s ease backwards;
+}
+
+.float-btn:nth-child(1) { animation-delay: 0.1s; }
+.float-btn:nth-child(2) { animation-delay: 0.2s; }
+.float-btn:nth-child(3) { animation-delay: 0.3s; }
+.float-btn:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes floatBtnEntry {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.float-btn:hover {
+    transform: scale(1.15) rotate(5deg);
+    box-shadow: 0 6px 25px var(--shadow);
+}
+
+.float-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: var(--primary);
+    transition: fill 0.3s ease;
+}
+
+/* =====================================================
+   NOTIFICATIONS
+   ===================================================== */
+.notification {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: var(--white);
+    padding: 15px 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px var(--shadow);
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notification.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+.notification-icon {
+    font-size: 1.2rem;
+    animation: notificationBounce 0.5s ease;
+}
+
+@keyframes notificationBounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+/* =====================================================
+   CONFETTI
+   ===================================================== */
+.confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 150;
+    overflow: hidden;
+}
+
+.confetti {
+    position: absolute;
+    opacity: 0;
+}
+
+.confetti.animate {
+    animation: confettiFall 3s ease-out forwards;
+}
+
+@keyframes confettiFall {
+    0% {
+        opacity: 1;
+        transform: translateY(-100%) rotate(0deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(100vh) rotate(720deg);
+    }
+}
+
+/* =====================================================
+   BREATHING OVERLAY
+   ===================================================== */
+.breathing-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, transparent 30%, var(--primary-light) 100%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: -1;
+    animation: breathe 8s ease-in-out infinite;
+}
+
+@keyframes breathe {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 0.2; }
+}
+
+/* =====================================================
+   MODALS
+   ===================================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 300;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal {
+    background: var(--white);
+    border-radius: 25px;
+    padding: 40px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    transform: scale(0.8);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal.stats-modal {
+    max-width: 500px;
+}
+
+.modal-overlay.show .modal {
+    transform: scale(1);
+}
+
+.modal-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    animation: modalIconBounce 1s ease infinite;
+}
+
+@keyframes modalIconBounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.modal-title {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+
+.modal-subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 25px;
+}
+
+.modal-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 25px;
+    padding: 15px;
+    background: var(--primary-light);
+    border-radius: 15px;
+}
+
+.modal-stat {
+    text-align: center;
+}
+
+.modal-stat-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.modal-stat-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.modal-btn {
+    padding: 15px 40px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-family: var(--font-modern);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px var(--shadow);
+}
+
+/* =====================================================
+   PERIOD TABS (Stats Modal)
+   ===================================================== */
+.period-tabs {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 20px;
+    background: var(--primary-light);
+    padding: 5px;
+    border-radius: 15px;
+}
+
+.period-tab {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: var(--font-modern);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.period-tab:hover {
+    color: var(--text-primary);
+}
+
+.period-tab.active {
+    background: var(--white);
+    color: var(--primary);
+    box-shadow: 0 2px 10px var(--shadow);
+}
+
+/* =====================================================
+   STATS CONTENT
+   ===================================================== */
+.stats-content {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.stats-section {
+    margin-bottom: 20px;
+}
+
+.stats-section-title {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.stats-card {
+    background: var(--primary-light);
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+}
+
+.stats-card.full-width {
+    grid-column: span 2;
+}
+
+.stats-card-value {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.stats-card-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 5px;
+}
+
+.stats-card-sublabel {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+.stats-divider {
+    height: 1px;
+    background: var(--primary-light);
+    margin: 15px 0;
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN
+   ===================================================== */
+@media (max-width: 500px) {
+    .container {
+        padding: 20px 15px;
+        border-radius: 25px;
+    }
+
+    .timer-circle {
+        width: 200px;
+        height: 200px;
+    }
+
+    .timer-circle::before {
+        width: 220px;
+        height: 220px;
+    }
+
+    .timer-circle::after {
+        width: 240px;
+        height: 240px;
+    }
+
+    .timer-digits {
+        font-size: 2.8rem;
+    }
+
+    .timer-digits.style-bold {
+        font-size: 3.2rem;
+    }
+
+    .timer-digits.style-handwritten {
+        font-size: 2.5rem;
+    }
+
+    .input-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .trip-stats {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .trip-stat {
+        flex: 1 1 40%;
+    }
+
+    .style-options {
+        gap: 4px;
+    }
+
+    .style-btn {
+        padding: 5px 8px;
+        font-size: 0.7rem;
+    }
+
+    .theme-btn {
+        width: 32px;
+        height: 32px;
+    }
+
+    .trip-dots {
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+    }
+
+    .mode-tabs {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .mode-tab {
+        justify-content: center;
+    }
+
+    .period-tabs {
+        flex-wrap: wrap;
+    }
+
+    .period-tab {
+        flex: 1;
+        min-width: 70px;
+        padding: 8px 12px;
+        font-size: 0.75rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-card.full-width {
+        grid-column: span 1;
+    }
+
+    .modal {
+        padding: 25px;
+        width: 95%;
+    }
+
+    .floating-buttons {
+        top: 10px;
+        right: 10px;
+    }
+
+    .float-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    .float-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    /* Fullscreen mobile adjustments */
+    body.fullscreen .container {
+        padding: 20px 15px;
+    }
+
+    body.fullscreen .timer-circle {
+        width: 220px;
+        height: 220px;
+    }
+
+    body.fullscreen .timer-digits {
+        font-size: 3rem;
+    }
+}
+
+/* =====================================================
+   FULLSCREEN RESPONSIVE (Larger screens)
+   ===================================================== */
+@media (min-width: 1200px) {
+    body.fullscreen .container {
+        padding: 50px 100px;
+    }
+
+    body.fullscreen .timer-circle {
+        width: 350px;
+        height: 350px;
+    }
+
+    body.fullscreen .timer-circle::before {
+        width: 370px;
+        height: 370px;
+    }
+
+    body.fullscreen .timer-circle::after {
+        width: 390px;
+        height: 390px;
+    }
+
+    body.fullscreen .timer-digits {
+        font-size: 5rem;
+    }
+
+    body.fullscreen .timer-digits.style-bold {
+        font-size: 5.5rem;
+    }
+
+    body.fullscreen .trip-tracker,
+    body.fullscreen .stopwatch-tracker {
+        max-width: 700px;
+    }
+
+    body.fullscreen .input-section,
+    body.fullscreen .settings-panel {
+        max-width: 600px;
+    }
+
+    body.fullscreen .button-group {
+        max-width: 700px;
+    }
+}

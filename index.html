@@ -3,991 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Focus Timer for DR.Mohammed Hassan</title>
+    <title>Calm Focus Timer</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500&family=Orbitron:wght@400;500&family=Playfair+Display:wght@400;500&family=Space+Mono&family=Bebas+Neue&family=Pacifico&family=JetBrains+Mono:wght@400;500&family=Righteous&display=swap" rel="stylesheet">
-    <style>
-        /* =====================================================
-           CSS VARIABLES & THEMES
-           ===================================================== */
-        :root {
-            /* Default Violet Theme */
-            --primary-light: #e8e0f0;
-            --primary: #9b7bb8;
-            --primary-dark: #7a5a9a;
-            --accent: #b794d4;
-            --background-start: #f5f0fa;
-            --background-end: #e8dff5;
-            --text-primary: #4a3a5c;
-            --text-secondary: #7a6a8c;
-            --white: #ffffff;
-            --shadow: rgba(155, 123, 184, 0.2);
-            --glow: rgba(155, 123, 184, 0.4);
-            
-            /* Timer font styles */
-            --font-modern: 'Quicksand', sans-serif;
-            --font-digital: 'Orbitron', sans-serif;
-            --font-elegant: 'Playfair Display', serif;
-            --font-mono: 'Space Mono', monospace;
-            --font-bold: 'Bebas Neue', cursive;
-            --font-handwritten: 'Pacifico', cursive;
-            --font-code: 'JetBrains Mono', monospace;
-            --font-display: 'Righteous', cursive;
-        }
-
-        /* Ocean Theme */
-        [data-theme="ocean"] {
-            --primary-light: #d0e8f2;
-            --primary: #5a9bbd;
-            --primary-dark: #3a7a9a;
-            --accent: #79c2d4;
-            --background-start: #e8f4f8;
-            --background-end: #d0e8f2;
-            --text-primary: #2a4a5c;
-            --text-secondary: #5a7a8c;
-            --shadow: rgba(90, 155, 189, 0.2);
-            --glow: rgba(90, 155, 189, 0.4);
-        }
-
-        /* Forest Theme */
-        [data-theme="forest"] {
-            --primary-light: #d4e8d4;
-            --primary: #6b9b6b;
-            --primary-dark: #4a7a4a;
-            --accent: #8bc48b;
-            --background-start: #f0f8f0;
-            --background-end: #e0f0e0;
-            --text-primary: #2a4a2a;
-            --text-secondary: #5a7a5a;
-            --shadow: rgba(107, 155, 107, 0.2);
-            --glow: rgba(107, 155, 107, 0.4);
-        }
-
-        /* Sunset Theme */
-        [data-theme="sunset"] {
-            --primary-light: #fde8d8;
-            --primary: #e8a87c;
-            --primary-dark: #d4825a;
-            --accent: #f0c4a0;
-            --background-start: #fff5f0;
-            --background-end: #fde8d8;
-            --text-primary: #5c3a2a;
-            --text-secondary: #8c6a5a;
-            --shadow: rgba(232, 168, 124, 0.2);
-            --glow: rgba(232, 168, 124, 0.4);
-        }
-
-        /* Rose Theme */
-        [data-theme="rose"] {
-            --primary-light: #fce4ec;
-            --primary: #e91e63;
-            --primary-dark: #c2185b;
-            --accent: #f48fb1;
-            --background-start: #fdf2f5;
-            --background-end: #fce4ec;
-            --text-primary: #4a2a3a;
-            --text-secondary: #8a5a6a;
-            --shadow: rgba(233, 30, 99, 0.15);
-            --glow: rgba(233, 30, 99, 0.3);
-        }
-
-        /* Midnight Theme */
-        [data-theme="midnight"] {
-            --primary-light: #3a3a5c;
-            --primary: #6a6aaa;
-            --primary-dark: #4a4a8a;
-            --accent: #8a8acc;
-            --background-start: #1a1a2e;
-            --background-end: #16213e;
-            --text-primary: #e8e8f0;
-            --text-secondary: #a8a8c0;
-            --white: #2a2a4a;
-            --shadow: rgba(106, 106, 170, 0.3);
-            --glow: rgba(106, 106, 170, 0.5);
-        }
-
-        /* Lavender Theme */
-        [data-theme="lavender"] {
-            --primary-light: #e6e6fa;
-            --primary: #9370db;
-            --primary-dark: #7b68ee;
-            --accent: #b19cd9;
-            --background-start: #f8f0ff;
-            --background-end: #e6e6fa;
-            --text-primary: #4b0082;
-            --text-secondary: #6a5acd;
-            --shadow: rgba(147, 112, 219, 0.2);
-            --glow: rgba(147, 112, 219, 0.4);
-        }
-
-        /* Mint Theme */
-        [data-theme="mint"] {
-            --primary-light: #d1f2eb;
-            --primary: #1abc9c;
-            --primary-dark: #16a085;
-            --accent: #48c9b0;
-            --background-start: #e8f8f5;
-            --background-end: #d1f2eb;
-            --text-primary: #0e4a3a;
-            --text-secondary: #1e8a7a;
-            --shadow: rgba(26, 188, 156, 0.2);
-            --glow: rgba(26, 188, 156, 0.4);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: var(--font-modern);
-            min-height: 100vh;
-            background: linear-gradient(135deg, var(--background-start) 0%, var(--background-end) 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow-x: hidden;
-        }
-
-        /* Animated background particles */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: 0;
-        }
-
-        .particle {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: var(--primary);
-            border-radius: 50%;
-            opacity: 0.1;
-            animation: float 15s infinite ease-in-out;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.15;
-            }
-            90% {
-                opacity: 0.15;
-            }
-            100% {
-                transform: translateY(-100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
-
-        /* Fullscreen mode styles */
-        body.fullscreen {
-            padding: 0;
-        }
-
-        /* =====================================================
-           MAIN CONTAINER
-           ===================================================== */
-        .container {
-            background: var(--white);
-            border-radius: 30px;
-            padding: 40px;
-            box-shadow: 0 20px 60px var(--shadow);
-            max-width: 520px;
-            width: 100%;
-            text-align: center;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            z-index: 1;
-            animation: containerEntry 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        @keyframes containerEntry {
-            from {
-                opacity: 0;
-                transform: translateY(30px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        body.fullscreen .container {
-            max-width: 100%;
-            height: 100vh;
-            border-radius: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 60px;
-        }
-
-        /* =====================================================
-           HEADER & TITLES
-           ===================================================== */
-        .header {
-            margin-bottom: 25px;
-        }
-
-        .title {
-            font-size: 1.8rem;
-            color: var(--text-primary);
-            font-weight: 500;
-            margin-bottom: 8px;
-            transition: all 0.4s ease;
-            animation: titlePulse 3s ease-in-out infinite;
-        }
-
-        @keyframes titlePulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
-        }
-
-        .subtitle {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            font-weight: 300;
-            animation: fadeInUp 0.6s ease 0.2s both;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .mode-indicator {
-            display: inline-block;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            margin-top: 15px;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: indicatorGlow 2s ease-in-out infinite;
-        }
-
-        @keyframes indicatorGlow {
-            0%, 100% { box-shadow: 0 0 10px var(--shadow); }
-            50% { box-shadow: 0 0 20px var(--glow); }
-        }
-
-        .mode-indicator.focus {
-            background: linear-gradient(135deg, var(--primary-light), var(--accent));
-            color: var(--text-primary);
-        }
-
-        .mode-indicator.break {
-            background: linear-gradient(135deg, #d4e7d4, #a8d4a8);
-            color: #3a5c3a;
-        }
-
-        /* =====================================================
-           TIMER DISPLAY
-           ===================================================== */
-        .timer-display {
-            margin: 30px 0;
-            position: relative;
-        }
-
-        .timer-circle {
-            width: 280px;
-            height: 280px;
-            margin: 0 auto;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            animation: circleEntry 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both;
-        }
-
-        @keyframes circleEntry {
-            from {
-                opacity: 0;
-                transform: scale(0.8) rotate(-10deg);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) rotate(0deg);
-            }
-        }
-
-        /* Decorative rings */
-        .timer-circle::before,
-        .timer-circle::after {
-            content: '';
-            position: absolute;
-            border-radius: 50%;
-            border: 2px dashed var(--primary-light);
-            animation: spinSlow 30s linear infinite;
-        }
-
-        .timer-circle::before {
-            width: 300px;
-            height: 300px;
-            opacity: 0.3;
-        }
-
-        .timer-circle::after {
-            width: 320px;
-            height: 320px;
-            opacity: 0.2;
-            animation-direction: reverse;
-            animation-duration: 45s;
-        }
-
-        @keyframes spinSlow {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* SVG Progress Circle */
-        .progress-ring {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            transform: rotate(-90deg);
-            filter: drop-shadow(0 0 10px var(--glow));
-        }
-
-        .progress-ring-bg {
-            fill: none;
-            stroke: var(--primary-light);
-            stroke-width: 8;
-            transition: stroke 0.4s ease;
-        }
-
-        .progress-ring-fill {
-            fill: none;
-            stroke: var(--primary);
-            stroke-width: 8;
-            stroke-linecap: round;
-            stroke-dasharray: 816;
-            stroke-dashoffset: 0;
-            transition: stroke-dashoffset 0.5s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.4s ease;
-        }
-
-        .progress-ring-fill.break {
-            stroke: #7ab87a;
-        }
-
-        /* Glowing effect when running */
-        .timer-circle.running .progress-ring-fill {
-            filter: drop-shadow(0 0 8px var(--primary));
-            animation: ringPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes ringPulse {
-            0%, 100% { filter: drop-shadow(0 0 8px var(--glow)); }
-            50% { filter: drop-shadow(0 0 15px var(--glow)); }
-        }
-
-        /* Timer digits */
-        .timer-digits {
-            font-size: 4rem;
-            color: var(--text-primary);
-            letter-spacing: 2px;
-            z-index: 1;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            text-shadow: 0 2px 10px var(--shadow);
-        }
-
-        .timer-digits.tick {
-            animation: tick 0.3s ease;
-        }
-
-        @keyframes tick {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
-
-        /* Font style variations */
-        .timer-digits.style-modern {
-            font-family: var(--font-modern);
-            font-weight: 300;
-        }
-
-        .timer-digits.style-digital {
-            font-family: var(--font-digital);
-            font-weight: 400;
-            letter-spacing: 4px;
-        }
-
-        .timer-digits.style-elegant {
-            font-family: var(--font-elegant);
-            font-weight: 400;
-            font-style: italic;
-        }
-
-        .timer-digits.style-mono {
-            font-family: var(--font-mono);
-            font-weight: 400;
-            letter-spacing: 0;
-        }
-
-        .timer-digits.style-bold {
-            font-family: var(--font-bold);
-            font-weight: 400;
-            letter-spacing: 6px;
-            font-size: 4.5rem;
-        }
-
-        .timer-digits.style-handwritten {
-            font-family: var(--font-handwritten);
-            font-weight: 400;
-            font-size: 3.5rem;
-        }
-
-        .timer-digits.style-code {
-            font-family: var(--font-code);
-            font-weight: 500;
-            letter-spacing: 2px;
-        }
-
-        .timer-digits.style-display {
-            font-family: var(--font-display);
-            font-weight: 400;
-            letter-spacing: 3px;
-        }
-
-        /* =====================================================
-           INPUT CONTROLS
-           ===================================================== */
-        .input-section {
-            margin: 20px 0;
-            transition: all 0.4s ease;
-            animation: fadeInUp 0.6s ease 0.4s both;
-        }
-
-        .input-group {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 15px;
-            transition: all 0.4s ease;
-        }
-
-        .input-group.hidden {
-            opacity: 0;
-            transform: translateY(-10px);
-            pointer-events: none;
-            position: absolute;
-        }
-
-        .input-label {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            min-width: 100px;
-            text-align: right;
-            transition: color 0.3s ease;
-        }
-
-        .time-input {
-            width: 80px;
-            padding: 12px 15px;
-            border: 2px solid var(--primary-light);
-            border-radius: 15px;
-            font-size: 1.1rem;
-            font-family: var(--font-modern);
-            color: var(--text-primary);
-            text-align: center;
-            transition: all 0.3s ease;
-            background: var(--white);
-        }
-
-        .time-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 20px var(--shadow);
-            transform: scale(1.05);
-        }
-
-        .input-hint {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-top: 5px;
-            transition: color 0.3s ease;
-        }
-
-        /* =====================================================
-           BUTTONS
-           ===================================================== */
-        .button-group {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 25px;
-            animation: fadeInUp 0.6s ease 0.5s both;
-        }
-
-        .btn {
-            padding: 14px 28px;
-            border: none;
-            border-radius: 25px;
-            font-family: var(--font-modern);
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: var(--white);
-            box-shadow: 0 8px 25px var(--shadow);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 12px 35px var(--shadow);
-        }
-
-        .btn-primary:active {
-            transform: translateY(-1px) scale(0.98);
-        }
-
-        .btn-secondary {
-            background: var(--primary-light);
-            color: var(--text-primary);
-        }
-
-        .btn-secondary:hover {
-            background: var(--accent);
-            color: var(--white);
-            transform: translateY(-2px);
-        }
-
-        .btn-break {
-            background: linear-gradient(135deg, #7ab87a, #5a985a);
-            color: white;
-            box-shadow: 0 8px 25px rgba(122, 184, 122, 0.3);
-        }
-
-        .btn-break:hover {
-            transform: translateY(-3px) scale(1.02);
-        }
-
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none !important;
-        }
-
-        .btn:disabled::before {
-            display: none;
-        }
-
-        /* Pulse animation for break button */
-        .btn.pulse-active {
-            animation: buttonPulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes buttonPulse {
-            0%, 100% { 
-                transform: scale(1);
-                box-shadow: 0 8px 25px rgba(122, 184, 122, 0.3);
-            }
-            50% { 
-                transform: scale(1.05);
-                box-shadow: 0 12px 40px rgba(122, 184, 122, 0.5);
-            }
-        }
-
-        /* =====================================================
-           SETTINGS PANELS
-           ===================================================== */
-        .settings-panel {
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px solid var(--primary-light);
-            transition: border-color 0.3s ease;
-        }
-
-        .settings-title {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        .settings-title:hover {
-            color: var(--primary);
-        }
-
-        .settings-title svg {
-            transition: transform 0.3s ease;
-        }
-
-        .settings-title.open svg {
-            transform: rotate(180deg);
-        }
-
-        .settings-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .settings-content.open {
-            max-height: 500px;
-        }
-
-        .settings-row {
-            margin-bottom: 20px;
-        }
-
-        .settings-label {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        /* Theme selector */
-        .theme-options {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .theme-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 3px solid transparent;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .theme-btn::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            background: white;
-            opacity: 0.3;
-            transition: transform 0.3s ease;
-        }
-
-        .theme-btn:hover {
-            transform: scale(1.15);
-        }
-
-        .theme-btn.active {
-            border-color: var(--text-primary);
-            transform: scale(1.1);
-        }
-
-        .theme-btn.active::after {
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .theme-btn[data-theme="violet"] { background: linear-gradient(135deg, #9b7bb8, #7a5a9a); }
-        .theme-btn[data-theme="ocean"] { background: linear-gradient(135deg, #5a9bbd, #3a7a9a); }
-        .theme-btn[data-theme="forest"] { background: linear-gradient(135deg, #6b9b6b, #4a7a4a); }
-        .theme-btn[data-theme="sunset"] { background: linear-gradient(135deg, #e8a87c, #d4825a); }
-        .theme-btn[data-theme="rose"] { background: linear-gradient(135deg, #e91e63, #c2185b); }
-        .theme-btn[data-theme="midnight"] { background: linear-gradient(135deg, #3a3a5c, #1a1a2e); }
-        .theme-btn[data-theme="lavender"] { background: linear-gradient(135deg, #9370db, #7b68ee); }
-        .theme-btn[data-theme="mint"] { background: linear-gradient(135deg, #1abc9c, #16a085); }
-
-        /* Style selector */
-        .style-options {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .style-btn {
-            padding: 8px 14px;
-            border: 2px solid var(--primary-light);
-            border-radius: 12px;
-            background: var(--white);
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .style-btn:hover {
-            border-color: var(--primary);
-            transform: translateY(-2px);
-        }
-
-        .style-btn.active {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: white;
-        }
-
-        /* =====================================================
-           FLOATING BUTTONS
-           ===================================================== */
-        .floating-buttons {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            z-index: 100;
-        }
-
-        .float-btn {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: var(--white);
-            border: none;
-            box-shadow: 0 4px 15px var(--shadow);
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: floatBtnEntry 0.5s ease backwards;
-        }
-
-        .float-btn:nth-child(1) { animation-delay: 0.1s; }
-        .float-btn:nth-child(2) { animation-delay: 0.2s; }
-
-        @keyframes floatBtnEntry {
-            from {
-                opacity: 0;
-                transform: translateX(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .float-btn:hover {
-            transform: scale(1.15) rotate(5deg);
-            box-shadow: 0 6px 25px var(--shadow);
-        }
-
-        .float-btn svg {
-            width: 20px;
-            height: 20px;
-            fill: var(--primary);
-            transition: fill 0.3s ease;
-        }
-
-        /* =====================================================
-           NOTIFICATIONS
-           ===================================================== */
-        .notification {
-            position: fixed;
-            top: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-100px);
-            background: var(--white);
-            padding: 15px 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px var(--shadow);
-            font-size: 1rem;
-            color: var(--text-primary);
-            opacity: 0;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 200;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .notification.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
-
-        .notification-icon {
-            font-size: 1.3rem;
-            animation: notificationBounce 0.5s ease;
-        }
-
-        @keyframes notificationBounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-
-        /* =====================================================
-           CONFETTI ANIMATION
-           ===================================================== */
-        .confetti-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 150;
-            overflow: hidden;
-        }
-
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            opacity: 0;
-        }
-
-        .confetti.animate {
-            animation: confettiFall 3s ease-out forwards;
-        }
-
-        @keyframes confettiFall {
-            0% {
-                opacity: 1;
-                transform: translateY(-100%) rotate(0deg);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(100vh) rotate(720deg);
-            }
-        }
-
-        /* =====================================================
-           BREATHING ANIMATION OVERLAY
-           ===================================================== */
-        .breathing-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, transparent 30%, var(--primary-light) 100%);
-            opacity: 0;
-            pointer-events: none;
-            z-index: -1;
-            animation: breathe 8s ease-in-out infinite;
-        }
-
-        @keyframes breathe {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 0.3; }
-        }
-
-        /* =====================================================
-           RESPONSIVE DESIGN
-           ===================================================== */
-        @media (max-width: 500px) {
-            .container {
-                padding: 25px 15px;
-                border-radius: 25px;
-            }
-
-            .timer-circle {
-                width: 220px;
-                height: 220px;
-            }
-
-            .timer-circle::before {
-                width: 240px;
-                height: 240px;
-            }
-
-            .timer-circle::after {
-                width: 260px;
-                height: 260px;
-            }
-
-            .timer-digits {
-                font-size: 3rem;
-            }
-
-            .timer-digits.style-bold {
-                font-size: 3.5rem;
-            }
-
-            .timer-digits.style-handwritten {
-                font-size: 2.8rem;
-            }
-
-            .input-group {
-                flex-direction: column;
-                gap: 8px;
-            }
-
-            .input-label {
-                text-align: center;
-            }
-
-            .button-group {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .style-options {
-                gap: 5px;
-            }
-
-            .style-btn {
-                padding: 6px 10px;
-                font-size: 0.75rem;
-            }
-
-            .theme-btn {
-                width: 35px;
-                height: 35px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body data-theme="violet">
     <!-- Animated Background Particles -->
@@ -1011,6 +29,16 @@
                 <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
             </svg>
         </button>
+        <button class="float-btn" id="resetTripBtn" title="Reset Trip">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>
+            </svg>
+        </button>
+        <button class="float-btn" id="statsBtn" title="View Statistics">
+            <svg viewBox="0 0 24 24">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+            </svg>
+        </button>
     </div>
 
     <!-- Notification Element -->
@@ -1019,46 +47,184 @@
         <span class="notification-text"></span>
     </div>
 
+    <!-- Trip Completion Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-icon">🎉</div>
+            <h2 class="modal-title">Trip Complete!</h2>
+            <p class="modal-subtitle">Amazing work! You've completed all your focus sessions.</p>
+            <div class="modal-stats">
+                <div class="modal-stat">
+                    <div class="modal-stat-value" id="modalTrips">0</div>
+                    <div class="modal-stat-label">Sessions</div>
+                </div>
+                <div class="modal-stat">
+                    <div class="modal-stat-value" id="modalTime">0</div>
+                    <div class="modal-stat-label">Minutes</div>
+                </div>
+                <div class="modal-stat">
+                    <div class="modal-stat-value" id="modalBreaks">0</div>
+                    <div class="modal-stat-label">Breaks</div>
+                </div>
+            </div>
+            <button class="modal-btn" id="modalCloseBtn">Start New Trip</button>
+        </div>
+    </div>
+
+    <!-- Statistics Modal -->
+    <div class="modal-overlay" id="statsModalOverlay">
+        <div class="modal stats-modal">
+            <div class="modal-icon">📊</div>
+            <h2 class="modal-title">Your Statistics</h2>
+            
+            <!-- Period Tabs -->
+            <div class="period-tabs">
+                <button class="period-tab active" data-period="daily">Daily</button>
+                <button class="period-tab" data-period="weekly">Weekly</button>
+                <button class="period-tab" data-period="monthly">Monthly</button>
+            </div>
+
+            <div class="stats-content" id="statsContent">
+                <!-- Stats will be populated by JavaScript -->
+            </div>
+
+            <button class="modal-btn" id="statsCloseBtn">Close</button>
+        </div>
+    </div>
+
     <!-- Main Container -->
     <div class="container">
         <!-- Header Section -->
         <header class="header">
-            <h1 class="title">Focus Timer for DR.Mohammed Hassan</h1>
+            <h1 class="title">Calm Focus</h1>
             <p class="subtitle">Breathe, focus, achieve</p>
             <span class="mode-indicator focus" id="modeIndicator">Focus Mode</span>
         </header>
 
+        <!-- Mode Toggle Tabs -->
+        <div class="mode-tabs">
+            <button class="mode-tab active" data-mode="timer" id="timerModeTab">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61l1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42A8.962 8.962 0 0012 4c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61zM12 20c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
+                </svg>
+                Focus Timer
+            </button>
+            <button class="mode-tab" data-mode="stopwatch" id="stopwatchModeTab">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                </svg>
+                Stopwatch
+            </button>
+        </div>
+
+        <!-- Trip Tracker -->
+        <div class="trip-tracker" id="tripTracker">
+            <div class="trip-header">
+                <span class="trip-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                    </svg>
+                    Today's Trip
+                </span>
+                <span class="trip-count" id="tripCount">0 / 4</span>
+            </div>
+            <div class="trip-progress-container">
+                <div class="trip-progress-bar">
+                    <div class="trip-progress-fill" id="tripProgressFill" style="width: 0%"></div>
+                </div>
+                <div class="trip-dots" id="tripDots">
+                    <!-- Dots will be generated by JavaScript -->
+                </div>
+            </div>
+            <div class="trip-stats">
+                <div class="trip-stat">
+                    <div class="trip-stat-value" id="totalFocusTime">0</div>
+                    <div class="trip-stat-label">Focus (min)</div>
+                </div>
+                <div class="trip-stat">
+                    <div class="trip-stat-value" id="totalBreakTime">0</div>
+                    <div class="trip-stat-label">Break (min)</div>
+                </div>
+                <div class="trip-stat">
+                    <div class="trip-stat-value" id="currentStreak">0</div>
+                    <div class="trip-stat-label">Streak 🔥</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stopwatch Tracker (Hidden by default) -->
+        <div class="trip-tracker stopwatch-tracker" id="stopwatchTracker" style="display: none;">
+            <div class="trip-header">
+                <span class="trip-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                    </svg>
+                    Stopwatch Session
+                </span>
+                <span class="trip-count" id="stopwatchStatus">Ready</span>
+            </div>
+            <div class="trip-stats">
+                <div class="trip-stat">
+                    <div class="trip-stat-value" id="stopwatchWorkTime">0</div>
+                    <div class="trip-stat-label">Work (min)</div>
+                </div>
+                <div class="trip-stat">
+                    <div class="trip-stat-value" id="stopwatchBreakTime">0</div>
+                    <div class="trip-stat-label">Break (min)</div>
+                </div>
+                <div class="trip-stat">
+                    <div class="trip-stat-value" id="stopwatchLaps">0</div>
+                    <div class="trip-stat-label">Laps</div>
+                </div>
+            </div>
+        </div>
+
         <!-- Timer Display -->
         <div class="timer-display">
             <div class="timer-circle" id="timerCircle">
-                <!-- SVG Progress Ring -->
-                <svg class="progress-ring" viewBox="0 0 280 280">
-                    <circle class="progress-ring-bg" cx="140" cy="140" r="130"/>
-                    <circle class="progress-ring-fill" id="progressRing" cx="140" cy="140" r="130"/>
+                <svg class="progress-ring" viewBox="0 0 250 250">
+                    <circle class="progress-ring-bg" cx="125" cy="125" r="115"/>
+                    <circle class="progress-ring-fill" id="progressRing" cx="125" cy="125" r="115"/>
                 </svg>
-                <!-- Timer Digits -->
-                <div class="timer-digits style-modern" id="timerDigits">25:00</div>
+                <div class="timer-content">
+                    <div class="timer-digits style-modern" id="timerDigits">25:00</div>
+                    <div class="timer-label" id="timerLabel">Focus Time</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lap Times Container (for stopwatch) -->
+        <div class="lap-times-container" id="lapTimesContainer" style="display: none;">
+            <div class="lap-times-header">
+                <span>Lap Times</span>
+                <button class="clear-laps-btn" id="clearLapsBtn">Clear</button>
+            </div>
+            <div class="lap-times-list" id="lapTimesList">
+                <!-- Lap times will be added here -->
             </div>
         </div>
 
         <!-- Input Section -->
         <div class="input-section" id="inputSection">
-            <!-- Focus Time Input -->
-            <div class="input-group" id="focusInputGroup">
-                <label class="input-label" for="focusTime">Focus time:</label>
-                <input type="number" id="focusTime" class="time-input" value="25" min="1" max="120">
-                <span class="input-hint">min</span>
+            <div class="input-row">
+                <div class="input-group" id="focusInputGroup">
+                    <label class="input-label" for="focusTime">Focus (min)</label>
+                    <input type="number" id="focusTime" class="time-input" value="25" min="1" max="120">
+                </div>
+                <div class="input-group" id="breakInputGroup">
+                    <label class="input-label" for="breakTime">Break (min)</label>
+                    <input type="number" id="breakTime" class="time-input" value="5" min="1" max="20">
+                    <span class="input-hint">max 20</span>
+                </div>
             </div>
-            <!-- Break Time Input (Hidden initially) -->
-            <div class="input-group hidden" id="breakInputGroup">
-                <label class="input-label" for="breakTime">Break time:</label>
-                <input type="number" id="breakTime" class="time-input" value="5" min="1" max="20">
-                <span class="input-hint">min (max 20)</span>
+            <div class="trip-input-group">
+                <span class="trip-input-label">Sessions per trip:</span>
+                <input type="number" id="tripTarget" class="trip-input" value="4" min="1" max="10">
             </div>
         </div>
 
-        <!-- Button Group -->
-        <div class="button-group">
+        <!-- Timer Button Group -->
+        <div class="button-group" id="timerButtonGroup">
             <button class="btn btn-primary" id="startBtn">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M8 5v14l11-7z"/>
@@ -1073,9 +239,49 @@
             </button>
             <button class="btn btn-break" id="breakBtn" disabled>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    <path d="M2 21h18v-2H2v2zm2-3h14v-2H4v2zm-2-3h18v-2H2v2zm4-3h10v-2H6v2zm-4-3h18V7H2v2zm6-3h6V4H8v2z"/>
                 </svg>
                 Have a Break
+            </button>
+            <button class="btn btn-skip" id="skipBtn" style="display: none;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                </svg>
+                Skip Break
+            </button>
+        </div>
+
+        <!-- Stopwatch Button Group (Hidden by default) -->
+        <div class="button-group" id="stopwatchButtonGroup" style="display: none;">
+            <button class="btn btn-primary btn-stopwatch" id="stopwatchStartBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+                Start
+            </button>
+            <button class="btn btn-secondary" id="stopwatchResetBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                </svg>
+                Reset
+            </button>
+            <button class="btn btn-lap" id="lapBtn" disabled>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0013 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
+                </svg>
+                Lap
+            </button>
+            <button class="btn btn-break" id="stopwatchBreakBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M2 21h18v-2H2v2zm2-3h14v-2H4v2zm-2-3h18v-2H2v2zm4-3h10v-2H6v2zm-4-3h18V7H2v2zm6-3h6V4H8v2z"/>
+                </svg>
+                Take Break
+            </button>
+            <button class="btn btn-skip" id="stopwatchResumeBtn" style="display: none;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+                Resume Work
             </button>
         </div>
 
@@ -1088,7 +294,6 @@
                 Customize
             </div>
             <div class="settings-content" id="settingsContent">
-                <!-- Theme Selection -->
                 <div class="settings-row">
                     <span class="settings-label">Color Theme</span>
                     <div class="theme-options">
@@ -1102,8 +307,6 @@
                         <button class="theme-btn" data-theme="mint" title="Mint"></button>
                     </div>
                 </div>
-
-                <!-- Timer Style Selection -->
                 <div class="settings-row">
                     <span class="settings-label">Timer Style</span>
                     <div class="style-options">
@@ -1121,739 +324,6 @@
         </div>
     </div>
 
-    <script>
-        /* =====================================================
-           TIMER APPLICATION - JAVASCRIPT
-           ===================================================== */
-
-        // =====================================================
-        // DOM ELEMENT REFERENCES
-        // =====================================================
-        const timerDigits = document.getElementById('timerDigits');
-        const timerCircle = document.getElementById('timerCircle');
-        const progressRing = document.getElementById('progressRing');
-        const modeIndicator = document.getElementById('modeIndicator');
-        const focusTimeInput = document.getElementById('focusTime');
-        const breakTimeInput = document.getElementById('breakTime');
-        const focusInputGroup = document.getElementById('focusInputGroup');
-        const breakInputGroup = document.getElementById('breakInputGroup');
-        const startBtn = document.getElementById('startBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        const breakBtn = document.getElementById('breakBtn');
-        const fullscreenBtn = document.getElementById('fullscreenBtn');
-        const soundBtn = document.getElementById('soundBtn');
-        const notification = document.getElementById('notification');
-        const settingsToggle = document.getElementById('settingsToggle');
-        const settingsContent = document.getElementById('settingsContent');
-        const themeBtns = document.querySelectorAll('.theme-btn');
-        const styleBtns = document.querySelectorAll('.style-btn');
-        const particlesContainer = document.getElementById('particles');
-        const confettiContainer = document.getElementById('confettiContainer');
-
-        // =====================================================
-        // TIMER STATE
-        // =====================================================
-        let timerState = {
-            mode: 'focus',
-            isRunning: false,
-            isPaused: false,
-            totalSeconds: 25 * 60,
-            remainingSeconds: 25 * 60,
-            intervalId: null,
-            soundEnabled: true
-        };
-
-        // Progress ring circumference
-        const CIRCUMFERENCE = 2 * Math.PI * 130;
-        progressRing.style.strokeDasharray = CIRCUMFERENCE;
-
-        // =====================================================
-        // PARTICLE ANIMATION SYSTEM
-        // =====================================================
-
-        /**
-         * Create floating particles in the background
-         */
-        function createParticles() {
-            const particleCount = 15;
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.width = (Math.random() * 15 + 5) + 'px';
-                particle.style.height = particle.style.width;
-                particle.style.animationDelay = (Math.random() * 15) + 's';
-                particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
-                particlesContainer.appendChild(particle);
-            }
-        }
-
-        // Initialize particles
-        createParticles();
-
-        // =====================================================
-        // CONFETTI ANIMATION
-        // =====================================================
-
-        /**
-         * Create confetti celebration effect
-         */
-        function createConfetti() {
-            const colors = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#95e1d3', '#f38181', '#aa96da'];
-            const confettiCount = 50;
-
-            for (let i = 0; i < confettiCount; i++) {
-                setTimeout(() => {
-                    const confetti = document.createElement('div');
-                    confetti.className = 'confetti';
-                    confetti.style.left = Math.random() * 100 + '%';
-                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                    confetti.style.width = (Math.random() * 10 + 5) + 'px';
-                    confetti.style.height = confetti.style.width;
-                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                    
-                    confettiContainer.appendChild(confetti);
-                    
-                    // Trigger animation
-                    requestAnimationFrame(() => {
-                        confetti.classList.add('animate');
-                    });
-                    
-                    // Remove after animation
-                    setTimeout(() => {
-                        confetti.remove();
-                    }, 4000);
-                }, i * 50);
-            }
-        }
-
-        // =====================================================
-        // UTILITY FUNCTIONS
-        // =====================================================
-
-        /**
-         * Format seconds into MM:SS string
-         */
-        function formatTime(totalSeconds) {
-            const minutes = Math.floor(totalSeconds / 60);
-            const seconds = totalSeconds % 60;
-            return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-        }
-
-        /**
-         * Update the progress ring
-         */
-        function updateProgressRing(remaining, total) {
-            const progress = remaining / total;
-            const offset = CIRCUMFERENCE * (1 - progress);
-            progressRing.style.strokeDashoffset = offset;
-        }
-
-        /**
-         * Show a notification message with icon
-         */
-        function showNotification(message, icon = '✨') {
-            const notifIcon = notification.querySelector('.notification-icon');
-            const notifText = notification.querySelector('.notification-text');
-            notifIcon.textContent = icon;
-            notifText.textContent = message;
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3500);
-        }
-
-        /**
-         * Play completion sound using Web Audio API
-         */
-        function playSound() {
-            if (!timerState.soundEnabled) return;
-            
-            try {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                
-                // Play a pleasant chord
-                const frequencies = [523.25, 659.25, 783.99]; // C5, E5, G5
-                
-                frequencies.forEach((freq, index) => {
-                    const oscillator = audioContext.createOscillator();
-                    const gainNode = audioContext.createGain();
-                    
-                    oscillator.connect(gainNode);
-                    gainNode.connect(audioContext.destination);
-                    
-                    oscillator.frequency.value = freq;
-                    oscillator.type = 'sine';
-                    
-                    const startTime = audioContext.currentTime + (index * 0.1);
-                    gainNode.gain.setValueAtTime(0.15, startTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + 1.5);
-                    
-                    oscillator.start(startTime);
-                    oscillator.stop(startTime + 1.5);
-                });
-            } catch (e) {
-                console.log('Audio not supported');
-            }
-        }
-
-        /**
-         * Add tick animation to timer digits
-         */
-        function tickAnimation() {
-            timerDigits.classList.add('tick');
-            setTimeout(() => {
-                timerDigits.classList.remove('tick');
-            }, 300);
-        }
-
-        // =====================================================
-        // TIMER FUNCTIONS
-        // =====================================================
-
-        /**
-         * Update the timer display
-         */
-        function updateDisplay() {
-            timerDigits.textContent = formatTime(timerState.remainingSeconds);
-            updateProgressRing(timerState.remainingSeconds, timerState.totalSeconds);
-        }
-
-        /**
-         * Start or resume the timer
-         */
-        function startTimer() {
-            if (timerState.isRunning) {
-                // Pause the timer
-                clearInterval(timerState.intervalId);
-                timerState.isRunning = false;
-                timerState.isPaused = true;
-                timerCircle.classList.remove('running');
-                startBtn.innerHTML = `
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M8 5v14l11-7z"/>
-                    </svg>
-                    Resume`;
-                return;
-            }
-
-            // Set up timer based on current mode
-            if (!timerState.isPaused) {
-                const inputValue = timerState.mode === 'focus' 
-                    ? parseInt(focusTimeInput.value) 
-                    : parseInt(breakTimeInput.value);
-                
-                if (isNaN(inputValue) || inputValue < 1) {
-                    showNotification('Please enter a valid time', '⚠️');
-                    return;
-                }
-
-                // Hard cap break time at 20 minutes
-                if (timerState.mode === 'break' && inputValue > 20) {
-                    breakTimeInput.value = 20;
-                    showNotification('Break time capped at 20 minutes', '⏰');
-                    timerState.totalSeconds = 20 * 60;
-                } else {
-                    timerState.totalSeconds = inputValue * 60;
-                }
-                
-                timerState.remainingSeconds = timerState.totalSeconds;
-            }
-
-            timerState.isRunning = true;
-            timerState.isPaused = false;
-            timerCircle.classList.add('running');
-
-            startBtn.innerHTML = `
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                </svg>
-                Pause`;
-
-            // Start the countdown
-            timerState.intervalId = setInterval(() => {
-                timerState.remainingSeconds--;
-                updateDisplay();
-                
-                // Add tick animation every second
-                if (timerState.remainingSeconds <= 10 && timerState.remainingSeconds > 0) {
-                    tickAnimation();
-                }
-
-                if (timerState.remainingSeconds <= 0) {
-                    clearInterval(timerState.intervalId);
-                    timerState.isRunning = false;
-                    timerCircle.classList.remove('running');
-                    playSound();
-                    createConfetti();
-                    
-                    if (timerState.mode === 'focus') {
-                        showNotification('Focus session complete! Time for a break.', '🎉');
-                        breakBtn.disabled = false;
-                        breakBtn.classList.add('pulse-active');
-                        startBtn.disabled = true;
-                    } else {
-                        showNotification('Break over! Ready for another focus session?', '💪');
-                        switchToFocusMode();
-                    }
-                }
-            }, 1000);
-
-            updateDisplay();
-            showNotification(timerState.mode === 'focus' ? 'Focus session started!' : 'Break started!', '🚀');
-        }
-
-        /**
-         * Reset the timer
-         */
-        function resetTimer() {
-            clearInterval(timerState.intervalId);
-            timerState.isRunning = false;
-            timerState.isPaused = false;
-            timerCircle.classList.remove('running');
-            
-            if (timerState.mode === 'focus') {
-                timerState.totalSeconds = parseInt(focusTimeInput.value) * 60 || 25 * 60;
-            } else {
-                timerState.totalSeconds = parseInt(breakTimeInput.value) * 60 || 5 * 60;
-            }
-            
-            timerState.remainingSeconds = timerState.totalSeconds;
-            
-            startBtn.innerHTML = `
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M8 5v14l11-7z"/>
-                </svg>
-                ${timerState.mode === 'focus' ? 'Start Focus' : 'Start Break'}`;
-            startBtn.disabled = false;
-            
-            updateDisplay();
-            showNotification('Timer reset!', '🔄');
-        }
-
-        /**
-         * Switch to break mode
-         */
-        function switchToBreakMode() {
-            timerState.mode = 'break';
-            timerState.isRunning = false;
-            timerState.isPaused = false;
-            
-            // Update UI
-            modeIndicator.textContent = 'Break Mode';
-            modeIndicator.classList.remove('focus');
-            modeIndicator.classList.add('break');
-            progressRing.classList.add('break');
-            
-            // Toggle input visibility with animation
-            focusInputGroup.classList.add('hidden');
-            breakInputGroup.classList.remove('hidden');
-            
-            // Set up break timer
-            let breakMinutes = parseInt(breakTimeInput.value) || 5;
-            if (breakMinutes > 20) breakMinutes = 20;
-            breakTimeInput.value = breakMinutes;
-            
-            timerState.totalSeconds = breakMinutes * 60;
-            timerState.remainingSeconds = timerState.totalSeconds;
-            
-            // Update buttons
-            startBtn.innerHTML = `
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M8 5v14l11-7z"/>
-                </svg>
-                Start Break`;
-            startBtn.disabled = false;
-            breakBtn.disabled = true;
-            breakBtn.classList.remove('pulse-active');
-            
-            updateDisplay();
-            showNotification('Enjoy your break!', '☕');
-        }
-
-        /**
-         * Switch to focus mode
-         */
-        function switchToFocusMode() {
-            timerState.mode = 'focus';
-            timerState.isRunning = false;
-            timerState.isPaused = false;
-            
-            // Update UI
-            modeIndicator.textContent = 'Focus Mode';
-            modeIndicator.classList.remove('break');
-            modeIndicator.classList.add('focus');
-            progressRing.classList.remove('break');
-            
-            // Toggle input visibility
-            focusInputGroup.classList.remove('hidden');
-            breakInputGroup.classList.add('hidden');
-            
-            // Set up focus timer
-            const focusMinutes = parseInt(focusTimeInput.value) || 25;
-            timerState.totalSeconds = focusMinutes * 60;
-            timerState.remainingSeconds = timerState.totalSeconds;
-            
-            // Update buttons
-            startBtn.innerHTML = `
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M8 5v14l11-7z"/>
-                </svg>
-                Start Focus`;
-            startBtn.disabled = false;
-            breakBtn.disabled = true;
-            
-            updateDisplay();
-        }
-
-        // =====================================================
-        // THEME FUNCTIONS
-        // =====================================================
-
-        /**
-         * Change the color theme
-         */
-        function changeTheme(theme) {
-            document.body.setAttribute('data-theme', theme);
-            
-            // Update active button
-            themeBtns.forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.dataset.theme === theme) {
-                    btn.classList.add('active');
-                }
-            });
-            
-            // Regenerate particles with new theme color
-            particlesContainer.innerHTML = '';
-            createParticles();
-            
-            // Save preference
-            localStorage.setItem('timerTheme', theme);
-            
-            showNotification(`Theme changed to ${theme}`, '🎨');
-        }
-
-        // =====================================================
-        // TIMER STYLE FUNCTIONS
-        // =====================================================
-
-        /**
-         * Change the timer digit font style
-         */
-        function changeTimerStyle(style) {
-            // Remove all style classes
-            const styles = ['modern', 'digital', 'elegant', 'mono', 'bold', 'handwritten', 'code', 'display'];
-            styles.forEach(s => timerDigits.classList.remove(`style-${s}`));
-            
-            // Add the selected style
-            timerDigits.classList.add(`style-${style}`);
-            
-            // Update active button
-            styleBtns.forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.dataset.style === style) {
-                    btn.classList.add('active');
-                }
-            });
-            
-            // Save preference
-            localStorage.setItem('timerStyle', style);
-        }
-
-        // =====================================================
-        // FULLSCREEN FUNCTIONALITY
-        // =====================================================
-
-        /**
-         * Toggle fullscreen mode
-         */
-        function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    showNotification('Fullscreen not available', '⚠️');
-                });
-                document.body.classList.add('fullscreen');
-                fullscreenBtn.querySelector('svg').innerHTML = 
-                    '<path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/>';
-            } else {
-                document.exitFullscreen();
-                document.body.classList.remove('fullscreen');
-                fullscreenBtn.querySelector('svg').innerHTML = 
-                    '<path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>';
-            }
-        }
-
-        /**
-         * Toggle sound
-         */
-        function toggleSound() {
-            timerState.soundEnabled = !timerState.soundEnabled;
-            const soundIcon = document.getElementById('soundIcon');
-            
-            if (timerState.soundEnabled) {
-                soundIcon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
-                showNotification('Sound enabled', '🔊');
-            } else {
-                soundIcon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
-                showNotification('Sound muted', '🔇');
-            }
-            
-            localStorage.setItem('timerSound', timerState.soundEnabled);
-        }
-
-        // =====================================================
-        // SETTINGS PANEL
-        // =====================================================
-
-        /**
-         * Toggle settings panel
-         */
-        function toggleSettings() {
-            settingsToggle.classList.toggle('open');
-            settingsContent.classList.toggle('open');
-        }
-
-        // =====================================================
-        // EVENT LISTENERS
-        // =====================================================
-
-        // Timer controls
-        startBtn.addEventListener('click', startTimer);
-        resetBtn.addEventListener('click', resetTimer);
-        breakBtn.addEventListener('click', switchToBreakMode);
-
-        // Floating buttons
-        fullscreenBtn.addEventListener('click', toggleFullscreen);
-        soundBtn.addEventListener('click', toggleSound);
-
-        // Settings toggle
-        settingsToggle.addEventListener('click', toggleSettings);
-
-        // Theme buttons
-        themeBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                changeTheme(btn.dataset.theme);
-            });
-        });
-
-        // Style buttons
-        styleBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                changeTimerStyle(btn.dataset.style);
-            });
-        });
-
-        // Input validation
-        breakTimeInput.addEventListener('change', () => {
-            let value = parseInt(breakTimeInput.value);
-            if (value > 20) {
-                breakTimeInput.value = 20;
-                showNotification('Maximum break time is 20 minutes', '⏰');
-            }
-            if (value < 1 || isNaN(value)) {
-                breakTimeInput.value = 1;
-            }
-        });
-
-        focusTimeInput.addEventListener('change', () => {
-            let value = parseInt(focusTimeInput.value);
-            if (value > 120) {
-                focusTimeInput.value = 120;
-                showNotification('Maximum focus time is 120 minutes', '⏰');
-            }
-            if (value < 1 || isNaN(value)) {
-                focusTimeInput.value = 1;
-            }
-        });
-
-        // Fullscreen change handler
-        document.addEventListener('fullscreenchange', () => {
-            if (!document.fullscreenElement) {
-                document.body.classList.remove('fullscreen');
-                fullscreenBtn.querySelector('svg').innerHTML = 
-                    '<path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>';
-            }
-        });
-
-        // Keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' && e.target.tagName !== 'INPUT') {
-                e.preventDefault();
-                if (!startBtn.disabled) startTimer();
-            }
-            if (e.code === 'KeyR' && e.target.tagName !== 'INPUT') {
-                resetTimer();
-            }
-            if (e.code === 'KeyF') {
-                toggleFullscreen();
-            }
-            if (e.code === 'KeyM') {
-                toggleSound();
-            }
-        });
-
-               // =====================================================
-        // INITIALIZATION
-        // =====================================================
-
-        /**
-         * Load saved preferences and initialize the app
-         */
-        function init() {
-            // Load saved theme
-            const savedTheme = localStorage.getItem('timerTheme');
-            if (savedTheme) {
-                changeTheme(savedTheme);
-            }
-
-            // Load saved timer style
-            const savedStyle = localStorage.getItem('timerStyle');
-            if (savedStyle) {
-                changeTimerStyle(savedStyle);
-            }
-
-            // Load saved sound preference
-            const savedSound = localStorage.getItem('timerSound');
-            if (savedSound !== null) {
-                timerState.soundEnabled = savedSound === 'true';
-                if (!timerState.soundEnabled) {
-                    document.getElementById('soundIcon').innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
-                }
-            }
-
-            // Initialize display
-            updateDisplay();
-
-            // Show welcome message after a short delay
-            setTimeout(() => {
-                showNotification('Welcome! Press Space to start', '👋');
-            }, 1000);
-        }
-
-        // Run initialization
-        init();
-
-        // =====================================================
-        // SERVICE WORKER FOR BACKGROUND TIMER (Optional)
-        // =====================================================
-
-        /**
-         * Request notification permission for timer alerts
-         */
-        function requestNotificationPermission() {
-            if ('Notification' in window && Notification.permission === 'default') {
-                Notification.requestPermission().then(permission => {
-                    if (permission === 'granted') {
-                        showNotification('Notifications enabled!', '🔔');
-                    }
-                });
-            }
-        }
-
-        /**
-         * Show browser notification when timer completes
-         */
-        function showBrowserNotification(title, body) {
-            if ('Notification' in window && Notification.permission === 'granted') {
-                new Notification(title, {
-                    body: body,
-                    icon: '⏰',
-                    badge: '⏰',
-                    vibrate: [200, 100, 200]
-                });
-            }
-        }
-
-        // Request notification permission when user interacts
-        document.addEventListener('click', () => {
-            requestNotificationPermission();
-        }, { once: true });
-
-        // =====================================================
-        // VISIBILITY CHANGE HANDLER
-        // =====================================================
-
-        /**
-         * Handle page visibility changes to maintain timer accuracy
-         */
-        let hiddenTime = null;
-
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden && timerState.isRunning) {
-                // Page is hidden, store the current time
-                hiddenTime = Date.now();
-            } else if (!document.hidden && hiddenTime && timerState.isRunning) {
-                // Page is visible again, calculate elapsed time
-                const elapsedSeconds = Math.floor((Date.now() - hiddenTime) / 1000);
-                timerState.remainingSeconds = Math.max(0, timerState.remainingSeconds - elapsedSeconds);
-                hiddenTime = null;
-                
-                // Check if timer should have completed while hidden
-                if (timerState.remainingSeconds <= 0) {
-                    clearInterval(timerState.intervalId);
-                    timerState.isRunning = false;
-                    timerCircle.classList.remove('running');
-                    timerState.remainingSeconds = 0;
-                    playSound();
-                    createConfetti();
-                    
-                    if (timerState.mode === 'focus') {
-                        showNotification('Focus session complete! Time for a break.', '🎉');
-                        showBrowserNotification('Focus Complete!', 'Great job! Time for a well-deserved break.');
-                        breakBtn.disabled = false;
-                        breakBtn.classList.add('pulse-active');
-                        startBtn.disabled = true;
-                    } else {
-                        showNotification('Break over! Ready for another focus session?', '💪');
-                        showBrowserNotification('Break Over!', 'Ready to focus again?');
-                        switchToFocusMode();
-                    }
-                }
-                
-                updateDisplay();
-            }
-        });
-
-        // =====================================================
-        // EASTER EGG - Double click timer for zen mode
-        // =====================================================
-
-        let zenMode = false;
-
-        timerCircle.addEventListener('dblclick', () => {
-            zenMode = !zenMode;
-            
-            if (zenMode) {
-                // Hide everything except timer
-                document.querySelector('.header').style.opacity = '0.3';
-                document.querySelector('.input-section').style.opacity = '0';
-                document.querySelector('.button-group').style.opacity = '0.3';
-                document.querySelector('.settings-panel').style.opacity = '0';
-                showNotification('Zen mode activated - double click to exit', '🧘');
-            } else {
-                // Show everything
-                document.querySelector('.header').style.opacity = '1';
-                document.querySelector('.input-section').style.opacity = '1';
-                document.querySelector('.button-group').style.opacity = '1';
-                document.querySelector('.settings-panel').style.opacity = '1';
-                showNotification('Zen mode deactivated', '✨');
-            }
-        });
-
-        // =====================================================
-        // PREVENT ACCIDENTAL PAGE CLOSE DURING TIMER
-        // =====================================================
-
-        window.addEventListener('beforeunload', (e) => {
-            if (timerState.isRunning) {
-                e.preventDefault();
-                e.returnValue = 'Timer is running. Are you sure you want to leave?';
-                return e.returnValue;
-            }
-        });
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
