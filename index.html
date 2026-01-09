@@ -4,12 +4,173 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calm Focus Timer</title>
+    <meta name="description" content="A beautiful focus timer with pomodoro technique, stopwatch, and stunning visual effects">
+    <meta name="theme-color" content="#1a1625">
+    
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500&family=Orbitron:wght@400;500&family=Playfair+Display:wght@400;500&family=Space+Mono&family=Bebas+Neue&family=Pacifico&family=JetBrains+Mono:wght@400;500&family=Righteous&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body data-theme="violet">
-    <!-- Animated Background Particles -->
+
+    <!-- =====================================================
+         ANIMATED BACKGROUND ELEMENTS (22 Animations)
+         ===================================================== -->
+    
+    <!-- 1. Particles -->
     <div class="particles" id="particles"></div>
+    
+    <!-- 2. Aurora Background -->
+    <div class="aurora-bg"></div>
+    
+    <!-- 3. Floating Orbs -->
+    <div class="orbs-container">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+    
+    <!-- 4. Star Field -->
+    <div class="stars-container" id="starsContainer"></div>
+    
+    <!-- 5. Wave Animation -->
+    <div class="wave-container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+    
+    <!-- 6. Matrix Rain -->
+    <div class="matrix-container" id="matrixContainer"></div>
+    
+    <!-- 7. Pulse Rings -->
+    <div class="pulse-rings">
+        <div class="pulse-ring"></div>
+        <div class="pulse-ring"></div>
+        <div class="pulse-ring"></div>
+        <div class="pulse-ring"></div>
+    </div>
+    
+    <!-- 8. Grid Background -->
+    <div class="grid-bg"></div>
+    
+    <!-- 9. Gradient Mesh -->
+    <div class="gradient-mesh"></div>
+    
+    <!-- 10. Bokeh Effect -->
+    <div class="bokeh-container" id="bokehContainer">
+        <div class="bokeh"></div>
+        <div class="bokeh"></div>
+        <div class="bokeh"></div>
+        <div class="bokeh"></div>
+        <div class="bokeh"></div>
+        <div class="bokeh"></div>
+        <div class="bokeh"></div>
+        <div class="bokeh"></div>
+    </div>
+    
+    <!-- 11. Neon Lines -->
+    <div class="neon-lines">
+        <div class="neon-line"></div>
+        <div class="neon-line"></div>
+        <div class="neon-line"></div>
+        <div class="neon-line"></div>
+        <div class="neon-line-vertical"></div>
+        <div class="neon-line-vertical"></div>
+        <div class="neon-line-vertical"></div>
+        <div class="neon-line-vertical"></div>
+    </div>
+    
+    <!-- 12. Constellation / Particle Network -->
+    <div class="constellation-container">
+        <canvas id="constellationCanvas"></canvas>
+    </div>
+    
+    <!-- 13. Geometric Shapes -->
+    <div class="geometric-container" id="geometricContainer">
+        <div class="geo-shape circle"></div>
+        <div class="geo-shape square"></div>
+        <div class="geo-shape circle"></div>
+        <div class="geo-shape square"></div>
+        <div class="geo-shape circle"></div>
+        <div class="geo-shape square"></div>
+        <div class="geo-shape triangle"></div>
+        <div class="geo-shape circle"></div>
+    </div>
+    
+    <!-- 14. Liquid / Fluid -->
+    <div class="liquid-container">
+        <div class="liquid-blob"></div>
+        <div class="liquid-blob"></div>
+        <div class="liquid-blob"></div>
+        <div class="liquid-blob"></div>
+    </div>
+    
+    <!-- 15. Cyber Grid -->
+    <div class="cyber-grid">
+        <div class="cyber-grid-floor"></div>
+        <div class="cyber-grid-ceiling"></div>
+    </div>
+    
+    <!-- 16. Smoke / Fog -->
+    <div class="smoke-container">
+        <div class="smoke"></div>
+        <div class="smoke"></div>
+        <div class="smoke"></div>
+    </div>
+    
+    <!-- 17. Hexagon Grid -->
+    <div class="hexagon-container" id="hexagonContainer"></div>
+    
+    <!-- 18. Rain Effect -->
+    <div class="rain-container" id="rainContainer"></div>
+    
+    <!-- 19. DNA Helix -->
+    <div class="dna-container" id="dnaContainer"></div>
+    
+    <!-- 20. Glitch Effect -->
+    <div class="glitch-container">
+        <div class="glitch-line"></div>
+        <div class="glitch-line"></div>
+        <div class="glitch-line"></div>
+        <div class="glitch-block"></div>
+        <div class="glitch-block"></div>
+        <div class="glitch-block"></div>
+    </div>
+    
+    <!-- 21. Vortex / Spiral -->
+    <div class="vortex-container">
+        <div class="vortex-ring"></div>
+        <div class="vortex-ring"></div>
+        <div class="vortex-ring"></div>
+        <div class="vortex-ring"></div>
+        <div class="vortex-ring"></div>
+        <div class="vortex-ring"></div>
+        <div class="vortex-ring"></div>
+        <div class="vortex-ring"></div>
+    </div>
+    
+    <!-- 22. Fireflies -->
+    <div class="fireflies-container" id="firefliesContainer"></div>
+    
+    <!-- 23. Northern Lights -->
+    <div class="northern-lights">
+        <div class="northern-light"></div>
+        <div class="northern-light"></div>
+        <div class="northern-light"></div>
+    </div>
+    
+    <!-- 24. Circuit Board -->
+    <div class="circuit-container" id="circuitContainer"></div>
+    
+    <!-- 25. Bubbles -->
+    <div class="bubbles-container" id="bubblesContainer"></div>
+    
+    <!-- 26. Comet / Shooting Stars -->
+    <div class="comets-container" id="cometsContainer"></div>
 
     <!-- Breathing Overlay -->
     <div class="breathing-overlay"></div>
@@ -17,37 +178,125 @@
     <!-- Confetti Container -->
     <div class="confetti-container" id="confettiContainer"></div>
 
-    <!-- Floating Buttons -->
+    <!-- =====================================================
+         FLOATING BUTTONS
+         ===================================================== -->
     <div class="floating-buttons">
-        <button class="float-btn" id="fullscreenBtn" title="Toggle Fullscreen">
+        <!-- Fullscreen Toggle -->
+        <button class="float-btn" id="fullscreenBtn" title="Toggle Fullscreen (F)">
             <svg viewBox="0 0 24 24" id="fullscreenIcon">
                 <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
             </svg>
         </button>
-        <button class="float-btn" id="soundBtn" title="Toggle Sound">
+        
+        <!-- Sound Toggle -->
+        <button class="float-btn" id="soundBtn" title="Toggle Sound (M)">
             <svg viewBox="0 0 24 24" id="soundIcon">
                 <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
             </svg>
         </button>
+        
+        <!-- Reset Trip -->
         <button class="float-btn" id="resetTripBtn" title="Reset Trip">
             <svg viewBox="0 0 24 24">
                 <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>
             </svg>
         </button>
-        <button class="float-btn" id="statsBtn" title="View Statistics">
+        
+        <!-- Statistics -->
+        <button class="float-btn" id="statsBtn" title="View Statistics (I)">
             <svg viewBox="0 0 24 24">
                 <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
             </svg>
         </button>
+        
+        <!-- Dark Mode Toggle -->
+        <button class="float-btn" id="darkModeBtn" title="Toggle Dark Mode (D)">
+            <svg viewBox="0 0 24 24" id="darkModeIcon">
+                <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+            </svg>
+        </button>
+        
+        <!-- Keyboard Shortcuts Help -->
+        <button class="float-btn" id="helpBtn" title="Keyboard Shortcuts">
+            <svg viewBox="0 0 24 24">
+                <path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/>
+            </svg>
+        </button>
     </div>
 
-    <!-- Notification Element -->
+    <!-- =====================================================
+         NOTIFICATION ELEMENT
+         ===================================================== -->
     <div class="notification" id="notification">
         <span class="notification-icon"></span>
         <span class="notification-text"></span>
     </div>
 
-    <!-- Trip Completion Modal -->
+    <!-- =====================================================
+         KEYBOARD SHORTCUTS MODAL
+         ===================================================== -->
+    <div class="modal-overlay" id="helpModalOverlay">
+        <div class="modal help-modal">
+            <div class="modal-icon">⌨️</div>
+            <h2 class="modal-title">Keyboard Shortcuts</h2>
+            <div class="shortcuts-grid">
+                <div class="shortcut-item">
+                    <kbd>Space</kbd>
+                    <span>Start / Pause</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>R</kbd>
+                    <span>Reset Timer</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>B</kbd>
+                    <span>Take Break</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>S</kbd>
+                    <span>Skip Break</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>T</kbd>
+                    <span>Toggle Timer/Stopwatch</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>L</kbd>
+                    <span>Record Lap</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>F</kbd>
+                    <span>Toggle Fullscreen</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>M</kbd>
+                    <span>Mute / Unmute</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>D</kbd>
+                    <span>Toggle Dark Mode</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>I</kbd>
+                    <span>Show Statistics</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>Esc</kbd>
+                    <span>Close Modal</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>?</kbd>
+                    <span>Show This Help</span>
+                </div>
+            </div>
+            <button class="modal-btn" id="helpCloseBtn">Got it!</button>
+        </div>
+    </div>
+
+    <!-- =====================================================
+         TRIP COMPLETION MODAL
+         ===================================================== -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal">
             <div class="modal-icon">🎉</div>
@@ -71,7 +320,9 @@
         </div>
     </div>
 
-    <!-- Statistics Modal -->
+    <!-- =====================================================
+         STATISTICS MODAL
+         ===================================================== -->
     <div class="modal-overlay" id="statsModalOverlay">
         <div class="modal stats-modal">
             <div class="modal-icon">📊</div>
@@ -82,6 +333,7 @@
                 <button class="period-tab active" data-period="daily">Daily</button>
                 <button class="period-tab" data-period="weekly">Weekly</button>
                 <button class="period-tab" data-period="monthly">Monthly</button>
+                <button class="period-tab" data-period="allTime">All Time</button>
             </div>
 
             <div class="stats-content" id="statsContent">
@@ -92,16 +344,34 @@
         </div>
     </div>
 
-    <!-- Main Container -->
+    <!-- =====================================================
+         MAIN CONTAINER
+         ===================================================== -->
     <div class="container">
-        <!-- Header Section -->
+        
+        <!-- =====================================================
+             HEADER SECTION
+             ===================================================== -->
         <header class="header">
             <h1 class="title">Calm Focus</h1>
             <p class="subtitle">Breathe, focus, achieve</p>
+            
+            <!-- Real-Time Clock (12-Hour Format) -->
+            <div class="current-clock">
+                <svg class="clock-icon" viewBox="0 0 24 24">
+                    <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                </svg>
+                <span class="clock-time" id="currentTime">12:00:00 AM</span>
+                <span class="clock-date" id="currentDate">Mon, Jan 1</span>
+            </div>
+            
+            <!-- Mode Indicator -->
             <span class="mode-indicator focus" id="modeIndicator">Focus Mode</span>
         </header>
 
-        <!-- Mode Toggle Tabs -->
+        <!-- =====================================================
+             MODE TOGGLE TABS
+             ===================================================== -->
         <div class="mode-tabs">
             <button class="mode-tab active" data-mode="timer" id="timerModeTab">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -117,7 +387,9 @@
             </button>
         </div>
 
-        <!-- Trip Tracker -->
+        <!-- =====================================================
+             TRIP TRACKER (Focus Timer Mode)
+             ===================================================== -->
         <div class="trip-tracker" id="tripTracker">
             <div class="trip-header">
                 <span class="trip-title">
@@ -152,7 +424,9 @@
             </div>
         </div>
 
-        <!-- Stopwatch Tracker (Hidden by default) -->
+        <!-- =====================================================
+             STOPWATCH TRACKER (Stopwatch Mode)
+             ===================================================== -->
         <div class="trip-tracker stopwatch-tracker" id="stopwatchTracker" style="display: none;">
             <div class="trip-header">
                 <span class="trip-title">
@@ -179,7 +453,9 @@
             </div>
         </div>
 
-        <!-- Timer Display -->
+        <!-- =====================================================
+             TIMER DISPLAY
+             ===================================================== -->
         <div class="timer-display">
             <div class="timer-circle" id="timerCircle">
                 <svg class="progress-ring" viewBox="0 0 250 250">
@@ -193,18 +469,22 @@
             </div>
         </div>
 
-        <!-- Lap Times Container (for stopwatch) -->
+        <!-- =====================================================
+             LAP TIMES CONTAINER (Stopwatch Mode)
+             ===================================================== -->
         <div class="lap-times-container" id="lapTimesContainer" style="display: none;">
             <div class="lap-times-header">
                 <span>Lap Times</span>
-                <button class="clear-laps-btn" id="clearLapsBtn">Clear</button>
+                <button class="clear-laps-btn" id="clearLapsBtn">Clear All</button>
             </div>
             <div class="lap-times-list" id="lapTimesList">
-                <!-- Lap times will be added here -->
+                <!-- Lap times will be added here by JavaScript -->
             </div>
         </div>
 
-        <!-- Input Section -->
+        <!-- =====================================================
+             INPUT SECTION (Focus Timer Mode)
+             ===================================================== -->
         <div class="input-section" id="inputSection">
             <div class="input-row">
                 <div class="input-group" id="focusInputGroup">
@@ -223,7 +503,9 @@
             </div>
         </div>
 
-        <!-- Timer Button Group -->
+        <!-- =====================================================
+             TIMER BUTTON GROUP (Focus Timer Mode)
+             ===================================================== -->
         <div class="button-group" id="timerButtonGroup">
             <button class="btn btn-primary" id="startBtn">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -251,7 +533,9 @@
             </button>
         </div>
 
-        <!-- Stopwatch Button Group (Hidden by default) -->
+        <!-- =====================================================
+             STOPWATCH BUTTON GROUP (Stopwatch Mode)
+             ===================================================== -->
         <div class="button-group" id="stopwatchButtonGroup" style="display: none;">
             <button class="btn btn-primary btn-stopwatch" id="stopwatchStartBtn">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -285,7 +569,9 @@
             </button>
         </div>
 
-        <!-- Settings Panel -->
+        <!-- =====================================================
+             SETTINGS PANEL
+             ===================================================== -->
         <div class="settings-panel">
             <div class="settings-title" id="settingsToggle">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -294,6 +580,8 @@
                 Customize
             </div>
             <div class="settings-content" id="settingsContent">
+                
+                <!-- Color Theme -->
                 <div class="settings-row">
                     <span class="settings-label">Color Theme</span>
                     <div class="theme-options">
@@ -305,8 +593,11 @@
                         <button class="theme-btn" data-theme="midnight" title="Midnight"></button>
                         <button class="theme-btn" data-theme="lavender" title="Lavender"></button>
                         <button class="theme-btn" data-theme="mint" title="Mint"></button>
+                        <button class="theme-btn" data-theme="dark" title="Pure Dark"></button>
                     </div>
                 </div>
+                
+                <!-- Timer Font Style -->
                 <div class="settings-row">
                     <span class="settings-label">Timer Style</span>
                     <div class="style-options">
@@ -320,10 +611,49 @@
                         <button class="style-btn" data-style="display">Display</button>
                     </div>
                 </div>
+                
+                <!-- Background Animation (22 Options - Only visible in fullscreen) -->
+                <div class="settings-row animation-row">
+                    <span class="settings-label">Background Animation (Fullscreen)</span>
+                    <div class="animation-options">
+                        <!-- Row 1 -->
+                        <button class="anim-btn active" data-anim="aurora" title="Aurora gradient waves">Aurora</button>
+                        <button class="anim-btn" data-anim="orbs" title="Floating blurred orbs">Orbs</button>
+                        <button class="anim-btn" data-anim="stars" title="Twinkling stars">Stars</button>
+                        <button class="anim-btn" data-anim="waves" title="Ocean waves">Waves</button>
+                        <button class="anim-btn" data-anim="matrix" title="Matrix digital rain">Matrix</button>
+                        <button class="anim-btn" data-anim="pulse" title="Pulsing rings">Pulse</button>
+                        <button class="anim-btn" data-anim="grid" title="Perspective grid">Grid</button>
+                        <!-- Row 2 -->
+                        <button class="anim-btn" data-anim="mesh" title="Gradient mesh">Mesh</button>
+                        <button class="anim-btn" data-anim="bokeh" title="Bokeh light effect">Bokeh</button>
+                        <button class="anim-btn" data-anim="neon" title="Neon light lines">Neon</button>
+                        <button class="anim-btn" data-anim="constellation" title="Connected particles">Network</button>
+                        <button class="anim-btn" data-anim="geometric" title="Floating shapes">Shapes</button>
+                        <button class="anim-btn" data-anim="liquid" title="Liquid blobs">Liquid</button>
+                        <button class="anim-btn" data-anim="cyber" title="Cyberpunk grid">Cyber</button>
+                        <!-- Row 3 -->
+                        <button class="anim-btn" data-anim="smoke" title="Soft smoke/fog">Smoke</button>
+                        <button class="anim-btn" data-anim="hexagon" title="Hexagon grid">Hexagon</button>
+                        <button class="anim-btn" data-anim="rain" title="Rain drops">Rain</button>
+                        <button class="anim-btn" data-anim="vortex" title="Spinning vortex">Vortex</button>
+                        <button class="anim-btn" data-anim="fireflies" title="Glowing fireflies">Fireflies</button>
+                        <button class="anim-btn" data-anim="northern" title="Northern lights">Lights</button>
+                        <button class="anim-btn" data-anim="circuit" title="Circuit board">Circuit</button>
+                        <button class="anim-btn" data-anim="glitch" title="Glitch effect">Glitch</button>
+                    </div>
+                </div>
+                
             </div>
         </div>
+        
     </div>
+    <!-- End Main Container -->
 
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
     <script src="app.js"></script>
+    
 </body>
 </html>

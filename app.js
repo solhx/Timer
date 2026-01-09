@@ -21,6 +21,7 @@ const fullscreenBtn = document.getElementById('fullscreenBtn');
 const soundBtn = document.getElementById('soundBtn');
 const resetTripBtn = document.getElementById('resetTripBtn');
 const statsBtn = document.getElementById('statsBtn');
+const darkModeBtn = document.getElementById('darkModeBtn');
 const notification = document.getElementById('notification');
 const settingsToggle = document.getElementById('settingsToggle');
 const settingsContent = document.getElementById('settingsContent');
@@ -28,6 +29,10 @@ const themeBtns = document.querySelectorAll('.theme-btn');
 const styleBtns = document.querySelectorAll('.style-btn');
 const particlesContainer = document.getElementById('particles');
 const confettiContainer = document.getElementById('confettiContainer');
+
+// Clock elements
+const currentTimeEl = document.getElementById('currentTime');
+const currentDateEl = document.getElementById('currentDate');
 
 // Mode tabs
 const timerModeTab = document.getElementById('timerModeTab');
@@ -83,6 +88,7 @@ const periodTabs = document.querySelectorAll('.period-tab');
 // APPLICATION STATE
 // =====================================================
 let appMode = 'timer'; // 'timer' or 'stopwatch'
+let previousTheme = 'violet'; // Store previous theme for dark mode toggle
 
 let timerState = {
     mode: 'focus', // 'focus' or 'break'
@@ -163,6 +169,93 @@ const CIRCUMFERENCE = 2 * Math.PI * 115;
 progressRing.style.strokeDasharray = CIRCUMFERENCE;
 
 // =====================================================
+// REAL-TIME CLOCK (12-Hour Format)
+// =====================================================
+function updateClock() {
+    const now = new Date();
+    
+    // 12-hour format
+    let hours = now.getHours();
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    
+    // Convert to 12-hour format
+    hours = hours % 12;
+    hours = hours ? hours : 12; // 0 should be 12
+    const hoursStr = String(hours).padStart(2, '0');
+    
+    const timeString = `${hoursStr}:${minutes}:${seconds} ${ampm}`;
+    
+    // Format date
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const dayName = days[now.getDay()];
+    const monthName = months[now.getMonth()];
+    const date = now.getDate();
+    const dateString = `${dayName}, ${monthName} ${date}`;
+    
+    // Update DOM
+    if (currentTimeEl) currentTimeEl.textContent = timeString;
+    if (currentDateEl) currentDateEl.textContent = dateString;
+}
+
+// Start clock
+updateClock();
+setInterval(updateClock, 1000);
+
+// =====================================================
+// DARK MODE TOGGLE
+// =====================================================
+function toggleDarkMode() {
+    const body = document.body;
+    const currentTheme = body.getAttribute('data-theme');
+    const darkModeIcon = document.getElementById('darkModeIcon');
+    
+    if (currentTheme === 'dark') {
+        // Switch back to previous theme
+        body.setAttribute('data-theme', previousTheme);
+        updateThemeButtons(previousTheme);
+        localStorage.setItem('timerTheme', previousTheme);
+        
+        // Update icon to moon
+        if (darkModeIcon) {
+            darkModeIcon.innerHTML = '<path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>';
+        }
+        
+        showNotification('Light mode enabled', '🌞');
+    } else {
+        // Save current theme and switch to dark
+        previousTheme = currentTheme;
+        localStorage.setItem('previousTheme', previousTheme);
+        body.setAttribute('data-theme', 'dark');
+        updateThemeButtons('dark');
+        localStorage.setItem('timerTheme', 'dark');
+        
+        // Update icon to sun
+        if (darkModeIcon) {
+            darkModeIcon.innerHTML = '<path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/>';
+        }
+        
+        showNotification('Dark mode enabled', '🌙');
+    }
+    
+    // Recreate particles for new theme
+    particlesContainer.innerHTML = '';
+    createParticles();
+}
+
+// Helper function to update theme buttons
+function updateThemeButtons(theme) {
+    themeBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-theme') === theme) {
+            btn.classList.add('active');
+        }
+    });
+}
+
+// =====================================================
 // PARTICLE ANIMATION SYSTEM
 // =====================================================
 function createParticles() {
@@ -186,7 +279,7 @@ createParticles();
 // CONFETTI ANIMATION
 // =====================================================
 function createConfetti(count = 50) {
-    const colors = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#95e1d3', '#f38181', '#aa96da', '#9b7bb8'];
+    const colors = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#95e1d3', '#f38181', '#aa96da', '#9b7bb8', '#bb86fc'];
     
     for (let i = 0; i < count; i++) {
         setTimeout(() => {
@@ -1332,6 +1425,22 @@ function changeTheme(theme) {
         }
     });
     
+    // Update dark mode icon based on theme
+    const darkModeIcon = document.getElementById('darkModeIcon');
+    if (darkModeIcon) {
+        if (theme === 'dark') {
+            darkModeIcon.innerHTML = '<path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/>';
+        } else {
+            darkModeIcon.innerHTML = '<path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>';
+        }
+    }
+    
+    // Save previous theme if not dark
+    if (theme !== 'dark') {
+        previousTheme = theme;
+        localStorage.setItem('previousTheme', theme);
+    }
+    
     particlesContainer.innerHTML = '';
     createParticles();
     
@@ -1449,6 +1558,11 @@ statsBtn.addEventListener('click', () => {
     renderStats('daily');
     statsModalOverlay.classList.add('show');
 });
+
+// Dark mode toggle button
+if (darkModeBtn) {
+    darkModeBtn.addEventListener('click', toggleDarkMode);
+}
 
 // Stats modal
 statsCloseBtn.addEventListener('click', () => {
@@ -1600,6 +1714,10 @@ document.addEventListener('keydown', (e) => {
             renderStats('daily');
             statsModalOverlay.classList.add('show');
             break;
+        case 'KeyD':
+            // Toggle dark mode
+            toggleDarkMode();
+            break;
         case 'Escape':
             // Close any open modals
             modalOverlay.classList.remove('show');
@@ -1733,15 +1851,26 @@ timerCircle.addEventListener('dblclick', () => {
 // =====================================================
 function init() {
     // Load saved theme
-    const savedTheme = localStorage.getItem('timerTheme');
-    if (savedTheme) {
-        document.body.setAttribute('data-theme', savedTheme);
-        themeBtns.forEach(btn => {
-            btn.classList.remove('active');
-            if (btn.dataset.theme === savedTheme) {
-                btn.classList.add('active');
-            }
-        });
+    const savedTheme = localStorage.getItem('timerTheme') || 'dark'; // Default to dark theme
+    const savedPreviousTheme = localStorage.getItem('previousTheme') || 'violet';
+    previousTheme = savedPreviousTheme;
+    
+    document.body.setAttribute('data-theme', savedTheme);
+    themeBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.theme === savedTheme) {
+            btn.classList.add('active');
+        }
+    });
+    
+    // Update dark mode icon based on saved theme
+    const darkModeIcon = document.getElementById('darkModeIcon');
+    if (darkModeIcon) {
+        if (savedTheme === 'dark') {
+            darkModeIcon.innerHTML = '<path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/>';
+        } else {
+            darkModeIcon.innerHTML = '<path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>';
+        }
     }
 
     // Load saved timer style
@@ -1788,9 +1917,396 @@ function init() {
 
     // Show welcome message with keyboard shortcuts hint
     setTimeout(() => {
-        showNotification('Welcome! Space=Start, T=Toggle Mode, I=Stats', '👋');
+        showNotification('Welcome! Space=Start, D=Dark Mode, I=Stats', '👋');
     }, 800);
 }
+
+// =====================================================
+// ADVANCED BACKGROUND ANIMATIONS
+// =====================================================
+
+// Create Stars
+function createStars() {
+    const container = document.getElementById('starsContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    
+    for (let i = 0; i < 150; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.width = (Math.random() * 3 + 1) + 'px';
+        star.style.height = star.style.width;
+        star.style.animationDelay = Math.random() * 3 + 's';
+        star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        container.appendChild(star);
+    }
+}
+
+// Create Matrix Rain
+function createMatrix() {
+    const container = document.getElementById('matrixContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    
+    const columnCount = Math.floor(window.innerWidth / 20);
+    const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+    
+    for (let i = 0; i < columnCount; i++) {
+        const column = document.createElement('div');
+        column.className = 'matrix-column';
+        column.style.left = (i * 20) + 'px';
+        column.style.animationDuration = (Math.random() * 10 + 5) + 's';
+        column.style.animationDelay = Math.random() * 5 + 's';
+        
+        let text = '';
+        const charCount = Math.floor(Math.random() * 20 + 10);
+        for (let j = 0; j < charCount; j++) {
+            text += chars[Math.floor(Math.random() * chars.length)] + '<br>';
+        }
+        column.innerHTML = text;
+        container.appendChild(column);
+    }
+}
+
+// Create Hexagon Grid
+function createHexagons() {
+    const container = document.getElementById('hexagonContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    
+    const hexSize = 70;
+    const cols = Math.ceil(window.innerWidth / (hexSize * 1.5)) + 2;
+    const rows = Math.ceil(window.innerHeight / (hexSize * 0.866)) + 2;
+    
+    for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+            const hex = document.createElement('div');
+            hex.className = 'hexagon';
+            const offsetX = row % 2 === 0 ? 0 : hexSize * 0.75;
+            hex.style.left = (col * hexSize * 1.5 + offsetX) + 'px';
+            hex.style.top = (row * hexSize * 0.866) + 'px';
+            hex.style.animationDelay = (Math.random() * 4) + 's';
+            container.appendChild(hex);
+        }
+    }
+}
+
+// Create Rain
+function createRain() {
+    const container = document.getElementById('rainContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    
+    const dropCount = 100;
+    for (let i = 0; i < dropCount; i++) {
+        const drop = document.createElement('div');
+        drop.className = 'rain-drop';
+        drop.style.left = Math.random() * 100 + '%';
+        drop.style.animationDuration = (Math.random() * 1 + 0.5) + 's';
+        drop.style.animationDelay = Math.random() * 2 + 's';
+        drop.style.height = (Math.random() * 20 + 10) + 'px';
+        container.appendChild(drop);
+    }
+}
+
+// Create Fireflies
+function createFireflies() {
+    const container = document.getElementById('firefliesContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    
+    const fireflyCount = 30;
+    for (let i = 0; i < fireflyCount; i++) {
+        const firefly = document.createElement('div');
+        firefly.className = 'firefly';
+        firefly.style.left = Math.random() * 100 + '%';
+        firefly.style.top = Math.random() * 100 + '%';
+        firefly.style.animationDelay = Math.random() * 15 + 's';
+        firefly.style.animationDuration = (Math.random() * 10 + 10) + 's';
+        container.appendChild(firefly);
+    }
+}
+
+// Create DNA Helix
+function createDNA() {
+    const container = document.getElementById('dnaContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    
+    const helix = document.createElement('div');
+    helix.className = 'dna-helix';
+    
+    const strandCount = 40;
+    for (let i = 0; i < strandCount; i++) {
+        const strand = document.createElement('div');
+        strand.className = 'dna-strand';
+        strand.style.top = (i * 25) + 'px';
+        strand.style.animationDelay = (i * 0.1) + 's';
+        helix.appendChild(strand);
+    }
+    
+    container.appendChild(helix);
+}
+
+// Create Circuit Board
+function createCircuit() {
+    const container = document.getElementById('circuitContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    
+    // Create horizontal lines
+    for (let i = 0; i < 15; i++) {
+        const line = document.createElement('div');
+        line.className = 'circuit-line horizontal';
+        line.style.top = (i * 7) + '%';
+        line.style.left = Math.random() * 30 + '%';
+        line.style.width = (Math.random() * 40 + 20) + '%';
+        line.style.animationDelay = Math.random() * 3 + 's';
+        container.appendChild(line);
+    }
+    
+    // Create vertical lines
+    for (let i = 0; i < 15; i++) {
+        const line = document.createElement('div');
+        line.className = 'circuit-line vertical';
+        line.style.left = (i * 7) + '%';
+        line.style.top = Math.random() * 30 + '%';
+        line.style.height = (Math.random() * 40 + 20) + '%';
+        line.style.animationDelay = Math.random() * 3 + 's';
+        container.appendChild(line);
+    }
+    
+    // Create nodes
+    for (let i = 0; i < 20; i++) {
+        const node = document.createElement('div');
+        node.className = 'circuit-node';
+        node.style.left = Math.random() * 90 + 5 + '%';
+        node.style.top = Math.random() * 90 + 5 + '%';
+        node.style.animationDelay = Math.random() * 2 + 's';
+        container.appendChild(node);
+    }
+}
+
+// Create Constellation / Particle Network
+function createConstellation() {
+    const canvas = document.getElementById('constellationCanvas');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    const particles = [];
+    const particleCount = 80;
+    const connectionDistance = 150;
+    
+    // Get theme color
+    const style = getComputedStyle(document.body);
+    const primaryColor = style.getPropertyValue('--primary').trim() || '#bb86fc';
+    
+    // Create particles
+    for (let i = 0; i < particleCount; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.5,
+            vy: (Math.random() - 0.5) * 0.5,
+            radius: Math.random() * 2 + 1
+        });
+    }
+    
+    function animate() {
+        if (!document.body.classList.contains('fullscreen') || 
+            !document.body.classList.contains('anim-constellation')) {
+            requestAnimationFrame(animate);
+            return;
+        }
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Update and draw particles
+        particles.forEach((p, i) => {
+            // Move
+            p.x += p.vx;
+            p.y += p.vy;
+            
+            // Bounce off edges
+            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+            
+            // Draw particle
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = primaryColor;
+            ctx.fill();
+            
+            // Draw connections
+            for (let j = i + 1; j < particles.length; j++) {
+                const p2 = particles[j];
+                const dx = p.x - p2.x;
+                const dy = p.y - p2.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < connectionDistance) {
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.strokeStyle = primaryColor;
+                    ctx.globalAlpha = 1 - (distance / connectionDistance);
+                    ctx.lineWidth = 0.5;
+                    ctx.stroke();
+                    ctx.globalAlpha = 1;
+                }
+            }
+        });
+        
+        requestAnimationFrame(animate);
+    }
+    
+    animate();
+}
+
+// Animation change handler
+const animBtns = document.querySelectorAll('.anim-btn');
+let currentAnimation = 'aurora';
+
+function changeAnimation(anim) {
+    currentAnimation = anim;
+    
+    // Remove all animation classes
+    const animClasses = [
+        'anim-aurora', 'anim-orbs', 'anim-stars', 'anim-waves',
+        'anim-matrix', 'anim-pulse', 'anim-grid', 'anim-mesh',
+        'anim-bokeh', 'anim-neon', 'anim-constellation', 'anim-geometric',
+        'anim-liquid', 'anim-cyber', 'anim-smoke', 'anim-hexagon',
+        'anim-rain', 'anim-dna', 'anim-glitch', 'anim-vortex',
+        'anim-fireflies', 'anim-northern', 'anim-circuit'
+    ];
+    
+    animClasses.forEach(cls => document.body.classList.remove(cls));
+    
+    // Add selected animation class
+    document.body.classList.add(`anim-${anim}`);
+    
+    // Update buttons
+    animBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.anim === anim) {
+            btn.classList.add('active');
+        }
+    });
+    
+    // Create dynamic elements based on animation
+    switch(anim) {
+        case 'stars':
+            createStars();
+            break;
+        case 'matrix':
+            createMatrix();
+            break;
+        case 'hexagon':
+            createHexagons();
+            break;
+        case 'rain':
+            createRain();
+            break;
+        case 'fireflies':
+            createFireflies();
+            break;
+        case 'dna':
+            createDNA();
+            break;
+        case 'circuit':
+            createCircuit();
+            break;
+        case 'constellation':
+            createConstellation();
+            break;
+    }
+    
+    localStorage.setItem('timerAnimation', anim);
+    showNotification(`Animation: ${anim.charAt(0).toUpperCase() + anim.slice(1)}`, '✨');
+}
+
+// Event listeners for animation buttons
+animBtns.forEach(btn => {
+    btn.addEventListener('click', () => changeAnimation(btn.dataset.anim));
+});
+
+// Load saved animation
+function loadAnimation() {
+    const savedAnim = localStorage.getItem('timerAnimation') || 'aurora';
+    currentAnimation = savedAnim;
+    document.body.classList.add(`anim-${savedAnim}`);
+    
+    animBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.anim === savedAnim) {
+            btn.classList.add('active');
+        }
+    });
+    
+    // Pre-create elements
+    createStars();
+    createMatrix();
+    createHexagons();
+    createRain();
+    createFireflies();
+    createDNA();
+    createCircuit();
+    
+    // Start constellation animation
+    setTimeout(createConstellation, 100);
+}
+
+// Initialize animations
+loadAnimation();
+
+// Handle resize
+window.addEventListener('resize', () => {
+    createMatrix();
+    createHexagons();
+    createRain();
+    createConstellation();
+});
+// =====================================================
+// HELP MODAL
+// =====================================================
+const helpBtn = document.getElementById('helpBtn');
+const helpModalOverlay = document.getElementById('helpModalOverlay');
+const helpCloseBtn = document.getElementById('helpCloseBtn');
+
+if (helpBtn) {
+    helpBtn.addEventListener('click', () => {
+        helpModalOverlay.classList.add('show');
+    });
+}
+
+if (helpCloseBtn) {
+    helpCloseBtn.addEventListener('click', () => {
+        helpModalOverlay.classList.remove('show');
+    });
+}
+
+if (helpModalOverlay) {
+    helpModalOverlay.addEventListener('click', (e) => {
+        if (e.target === helpModalOverlay) {
+            helpModalOverlay.classList.remove('show');
+        }
+    });
+}
+
+// Add '?' key to open help
+document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT') return;
+    
+    if (e.key === '?' || (e.shiftKey && e.code === 'Slash')) {
+        e.preventDefault();
+        helpModalOverlay.classList.add('show');
+    }
+});
 
 // Run initialization
 init();
