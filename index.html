@@ -16,164 +16,13 @@
 <body data-theme="violet">
 
     <!-- =====================================================
-         ANIMATED BACKGROUND ELEMENTS (22 Animations)
+         MODERN BACKGROUND ANIMATION (Fullscreen only)
          ===================================================== -->
-    
-    <!-- 1. Particles -->
-    <div class="particles" id="particles"></div>
-    
-    <!-- 2. Aurora Background -->
-    <div class="aurora-bg"></div>
-    
-    <!-- 3. Floating Orbs -->
-    <div class="orbs-container">
-        <div class="orb"></div>
-        <div class="orb"></div>
-        <div class="orb"></div>
-        <div class="orb"></div>
+    <div class="bg-animation-container">
+        <div class="floating-gradient floating-gradient-1"></div>
+        <div class="floating-gradient floating-gradient-2"></div>
+        <div class="floating-gradient floating-gradient-3"></div>
     </div>
-    
-    <!-- 4. Star Field -->
-    <div class="stars-container" id="starsContainer"></div>
-    
-    <!-- 5. Wave Animation -->
-    <div class="wave-container">
-        <div class="wave"></div>
-        <div class="wave"></div>
-        <div class="wave"></div>
-    </div>
-    
-    <!-- 6. Matrix Rain -->
-    <div class="matrix-container" id="matrixContainer"></div>
-    
-    <!-- 7. Pulse Rings -->
-    <div class="pulse-rings">
-        <div class="pulse-ring"></div>
-        <div class="pulse-ring"></div>
-        <div class="pulse-ring"></div>
-        <div class="pulse-ring"></div>
-    </div>
-    
-    <!-- 8. Grid Background -->
-    <div class="grid-bg"></div>
-    
-    <!-- 9. Gradient Mesh -->
-    <div class="gradient-mesh"></div>
-    
-    <!-- 10. Bokeh Effect -->
-    <div class="bokeh-container" id="bokehContainer">
-        <div class="bokeh"></div>
-        <div class="bokeh"></div>
-        <div class="bokeh"></div>
-        <div class="bokeh"></div>
-        <div class="bokeh"></div>
-        <div class="bokeh"></div>
-        <div class="bokeh"></div>
-        <div class="bokeh"></div>
-    </div>
-    
-    <!-- 11. Neon Lines -->
-    <div class="neon-lines">
-        <div class="neon-line"></div>
-        <div class="neon-line"></div>
-        <div class="neon-line"></div>
-        <div class="neon-line"></div>
-        <div class="neon-line-vertical"></div>
-        <div class="neon-line-vertical"></div>
-        <div class="neon-line-vertical"></div>
-        <div class="neon-line-vertical"></div>
-    </div>
-    
-    <!-- 12. Constellation / Particle Network -->
-    <div class="constellation-container">
-        <canvas id="constellationCanvas"></canvas>
-    </div>
-    
-    <!-- 13. Geometric Shapes -->
-    <div class="geometric-container" id="geometricContainer">
-        <div class="geo-shape circle"></div>
-        <div class="geo-shape square"></div>
-        <div class="geo-shape circle"></div>
-        <div class="geo-shape square"></div>
-        <div class="geo-shape circle"></div>
-        <div class="geo-shape square"></div>
-        <div class="geo-shape triangle"></div>
-        <div class="geo-shape circle"></div>
-    </div>
-    
-    <!-- 14. Liquid / Fluid -->
-    <div class="liquid-container">
-        <div class="liquid-blob"></div>
-        <div class="liquid-blob"></div>
-        <div class="liquid-blob"></div>
-        <div class="liquid-blob"></div>
-    </div>
-    
-    <!-- 15. Cyber Grid -->
-    <div class="cyber-grid">
-        <div class="cyber-grid-floor"></div>
-        <div class="cyber-grid-ceiling"></div>
-    </div>
-    
-    <!-- 16. Smoke / Fog -->
-    <div class="smoke-container">
-        <div class="smoke"></div>
-        <div class="smoke"></div>
-        <div class="smoke"></div>
-    </div>
-    
-    <!-- 17. Hexagon Grid -->
-    <div class="hexagon-container" id="hexagonContainer"></div>
-    
-    <!-- 18. Rain Effect -->
-    <div class="rain-container" id="rainContainer"></div>
-    
-    <!-- 19. DNA Helix -->
-    <div class="dna-container" id="dnaContainer"></div>
-    
-    <!-- 20. Glitch Effect -->
-    <div class="glitch-container">
-        <div class="glitch-line"></div>
-        <div class="glitch-line"></div>
-        <div class="glitch-line"></div>
-        <div class="glitch-block"></div>
-        <div class="glitch-block"></div>
-        <div class="glitch-block"></div>
-    </div>
-    
-    <!-- 21. Vortex / Spiral -->
-    <div class="vortex-container">
-        <div class="vortex-ring"></div>
-        <div class="vortex-ring"></div>
-        <div class="vortex-ring"></div>
-        <div class="vortex-ring"></div>
-        <div class="vortex-ring"></div>
-        <div class="vortex-ring"></div>
-        <div class="vortex-ring"></div>
-        <div class="vortex-ring"></div>
-    </div>
-    
-    <!-- 22. Fireflies -->
-    <div class="fireflies-container" id="firefliesContainer"></div>
-    
-    <!-- 23. Northern Lights -->
-    <div class="northern-lights">
-        <div class="northern-light"></div>
-        <div class="northern-light"></div>
-        <div class="northern-light"></div>
-    </div>
-    
-    <!-- 24. Circuit Board -->
-    <div class="circuit-container" id="circuitContainer"></div>
-    
-    <!-- 25. Bubbles -->
-    <div class="bubbles-container" id="bubblesContainer"></div>
-    
-    <!-- 26. Comet / Shooting Stars -->
-    <div class="comets-container" id="cometsContainer"></div>
-
-    <!-- Breathing Overlay -->
-    <div class="breathing-overlay"></div>
 
     <!-- Confetti Container -->
     <div class="confetti-container" id="confettiContainer"></div>
@@ -356,15 +205,6 @@
             <h1 class="title">Calm Focus</h1>
             <p class="subtitle">Breathe, focus, achieve</p>
             
-            <!-- Real-Time Clock (12-Hour Format) -->
-            <div class="current-clock">
-                <svg class="clock-icon" viewBox="0 0 24 24">
-                    <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
-                </svg>
-                <span class="clock-time" id="currentTime">12:00:00 AM</span>
-                <span class="clock-date" id="currentDate">Mon, Jan 1</span>
-            </div>
-            
             <!-- Mode Indicator -->
             <span class="mode-indicator focus" id="modeIndicator">Focus Mode</span>
         </header>
@@ -422,6 +262,12 @@
                     <div class="trip-stat-label">Streak 🔥</div>
                 </div>
             </div>
+            
+            <!-- CLOCK SECTION - ADDED BELOW TRIP STATS -->
+            <div class="clock-section">
+                <div class="clock-time" id="currentTime">12:00 PM</div>
+                <div class="clock-date" id="currentDate">Monday, January 1</div>
+            </div>
         </div>
 
         <!-- =====================================================
@@ -450,6 +296,12 @@
                     <div class="trip-stat-value" id="stopwatchLaps">0</div>
                     <div class="trip-stat-label">Laps</div>
                 </div>
+            </div>
+            
+            <!-- CLOCK SECTION - ADDED BELOW STOPWATCH STATS -->
+            <div class="clock-section">
+                <div class="clock-time" id="swCurrentTime">12:00 PM</div>
+                <div class="clock-date" id="swCurrentDate">Monday, January 1</div>
             </div>
         </div>
 
@@ -612,48 +464,15 @@
                     </div>
                 </div>
                 
-                <!-- Background Animation (22 Options - Only visible in fullscreen) -->
-                <div class="settings-row animation-row">
-                    <span class="settings-label">Background Animation (Fullscreen)</span>
-                    <div class="animation-options">
-                        <!-- Row 1 -->
-                        <button class="anim-btn active" data-anim="aurora" title="Aurora gradient waves">Aurora</button>
-                        <button class="anim-btn" data-anim="orbs" title="Floating blurred orbs">Orbs</button>
-                        <button class="anim-btn" data-anim="stars" title="Twinkling stars">Stars</button>
-                        <button class="anim-btn" data-anim="waves" title="Ocean waves">Waves</button>
-                        <button class="anim-btn" data-anim="matrix" title="Matrix digital rain">Matrix</button>
-                        <button class="anim-btn" data-anim="pulse" title="Pulsing rings">Pulse</button>
-                        <button class="anim-btn" data-anim="grid" title="Perspective grid">Grid</button>
-                        <!-- Row 2 -->
-                        <button class="anim-btn" data-anim="mesh" title="Gradient mesh">Mesh</button>
-                        <button class="anim-btn" data-anim="bokeh" title="Bokeh light effect">Bokeh</button>
-                        <button class="anim-btn" data-anim="neon" title="Neon light lines">Neon</button>
-                        <button class="anim-btn" data-anim="constellation" title="Connected particles">Network</button>
-                        <button class="anim-btn" data-anim="geometric" title="Floating shapes">Shapes</button>
-                        <button class="anim-btn" data-anim="liquid" title="Liquid blobs">Liquid</button>
-                        <button class="anim-btn" data-anim="cyber" title="Cyberpunk grid">Cyber</button>
-                        <!-- Row 3 -->
-                        <button class="anim-btn" data-anim="smoke" title="Soft smoke/fog">Smoke</button>
-                        <button class="anim-btn" data-anim="hexagon" title="Hexagon grid">Hexagon</button>
-                        <button class="anim-btn" data-anim="rain" title="Rain drops">Rain</button>
-                        <button class="anim-btn" data-anim="vortex" title="Spinning vortex">Vortex</button>
-                        <button class="anim-btn" data-anim="fireflies" title="Glowing fireflies">Fireflies</button>
-                        <button class="anim-btn" data-anim="northern" title="Northern lights">Lights</button>
-                        <button class="anim-btn" data-anim="circuit" title="Circuit board">Circuit</button>
-                        <button class="anim-btn" data-anim="glitch" title="Glitch effect">Glitch</button>
-                    </div>
-                </div>
-                
             </div>
         </div>
         
     </div>
-    <!-- End Main Container -->
 
     <!-- =====================================================
          JAVASCRIPT
          ===================================================== -->
     <script src="app.js"></script>
-    
+
 </body>
 </html>

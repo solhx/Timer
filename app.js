@@ -1,5 +1,6 @@
 /* =====================================================
-   TIMER APPLICATION - JAVASCRIPT
+   TIMER APPLICATION - LIGHTWEIGHT VERSION
+   No heavy animations, optimized for performance
    ===================================================== */
 
 // =====================================================
@@ -27,12 +28,7 @@ const settingsToggle = document.getElementById('settingsToggle');
 const settingsContent = document.getElementById('settingsContent');
 const themeBtns = document.querySelectorAll('.theme-btn');
 const styleBtns = document.querySelectorAll('.style-btn');
-const particlesContainer = document.getElementById('particles');
 const confettiContainer = document.getElementById('confettiContainer');
-
-// Clock elements
-const currentTimeEl = document.getElementById('currentTime');
-const currentDateEl = document.getElementById('currentDate');
 
 // Mode tabs
 const timerModeTab = document.getElementById('timerModeTab');
@@ -84,14 +80,20 @@ const statsContent = document.getElementById('statsContent');
 const statsCloseBtn = document.getElementById('statsCloseBtn');
 const periodTabs = document.querySelectorAll('.period-tab');
 
+// Clock elements
+const currentTimeEl = document.getElementById('currentTime');
+const currentDateEl = document.getElementById('currentDate');
+const swCurrentTimeEl = document.getElementById('swCurrentTime');
+const swCurrentDateEl = document.getElementById('swCurrentDate');
+
 // =====================================================
 // APPLICATION STATE
 // =====================================================
-let appMode = 'timer'; // 'timer' or 'stopwatch'
-let previousTheme = 'violet'; // Store previous theme for dark mode toggle
+let appMode = 'timer';
+let previousTheme = 'violet';
 
 let timerState = {
-    mode: 'focus', // 'focus' or 'break'
+    mode: 'focus',
     isRunning: false,
     isPaused: false,
     totalSeconds: 25 * 60,
@@ -101,13 +103,13 @@ let timerState = {
 };
 
 let stopwatchState = {
-    mode: 'work', // 'work' or 'break'
+    mode: 'work',
     isRunning: false,
     isPaused: false,
-    elapsedSeconds: 0,           // Total elapsed work time
-    savedElapsedSeconds: 0,      // Saved time before break
-    breakElapsedSeconds: 0,      // Current break elapsed time
-    breakTotalSeconds: 20 * 60,  // Break duration (20 minutes)
+    elapsedSeconds: 0,
+    savedElapsedSeconds: 0,
+    breakElapsedSeconds: 0,
+    breakTotalSeconds: 20 * 60,
     intervalId: null,
     laps: [],
     lastLapTime: 0,
@@ -125,84 +127,15 @@ let tripState = {
     breakStartTime: null
 };
 
-// Statistics state
 let statsState = {
-    daily: {
-        date: '',
-        focusMinutes: 0,
-        breakMinutes: 0,
-        stopwatchWorkMinutes: 0,
-        stopwatchBreakMinutes: 0,
-        sessions: 0,
-        trips: 0
-    },
-    weekly: {
-        weekStart: '',
-        focusMinutes: 0,
-        breakMinutes: 0,
-        stopwatchWorkMinutes: 0,
-        stopwatchBreakMinutes: 0,
-        sessions: 0,
-        trips: 0
-    },
-    monthly: {
-        month: '',
-        focusMinutes: 0,
-        breakMinutes: 0,
-        stopwatchWorkMinutes: 0,
-        stopwatchBreakMinutes: 0,
-        sessions: 0,
-        trips: 0
-    },
-    allTime: {
-        focusMinutes: 0,
-        breakMinutes: 0,
-        stopwatchWorkMinutes: 0,
-        stopwatchBreakMinutes: 0,
-        sessions: 0,
-        trips: 0
-    }
+    daily: { date: '', focusMinutes: 0, breakMinutes: 0, stopwatchWorkMinutes: 0, stopwatchBreakMinutes: 0, sessions: 0, trips: 0 },
+    weekly: { weekStart: '', focusMinutes: 0, breakMinutes: 0, stopwatchWorkMinutes: 0, stopwatchBreakMinutes: 0, sessions: 0, trips: 0 },
+    monthly: { month: '', focusMinutes: 0, breakMinutes: 0, stopwatchWorkMinutes: 0, stopwatchBreakMinutes: 0, sessions: 0, trips: 0 },
+    allTime: { focusMinutes: 0, breakMinutes: 0, stopwatchWorkMinutes: 0, stopwatchBreakMinutes: 0, sessions: 0, trips: 0 }
 };
 
-// Progress ring circumference (2 * PI * radius)
 const CIRCUMFERENCE = 2 * Math.PI * 115;
 progressRing.style.strokeDasharray = CIRCUMFERENCE;
-
-// =====================================================
-// REAL-TIME CLOCK (12-Hour Format)
-// =====================================================
-function updateClock() {
-    const now = new Date();
-    
-    // 12-hour format
-    let hours = now.getHours();
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    
-    // Convert to 12-hour format
-    hours = hours % 12;
-    hours = hours ? hours : 12; // 0 should be 12
-    const hoursStr = String(hours).padStart(2, '0');
-    
-    const timeString = `${hoursStr}:${minutes}:${seconds} ${ampm}`;
-    
-    // Format date
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const dayName = days[now.getDay()];
-    const monthName = months[now.getMonth()];
-    const date = now.getDate();
-    const dateString = `${dayName}, ${monthName} ${date}`;
-    
-    // Update DOM
-    if (currentTimeEl) currentTimeEl.textContent = timeString;
-    if (currentDateEl) currentDateEl.textContent = dateString;
-}
-
-// Start clock
-updateClock();
-setInterval(updateClock, 1000);
 
 // =====================================================
 // DARK MODE TOGGLE
@@ -213,39 +146,26 @@ function toggleDarkMode() {
     const darkModeIcon = document.getElementById('darkModeIcon');
     
     if (currentTheme === 'dark') {
-        // Switch back to previous theme
         body.setAttribute('data-theme', previousTheme);
         updateThemeButtons(previousTheme);
         localStorage.setItem('timerTheme', previousTheme);
-        
-        // Update icon to moon
         if (darkModeIcon) {
             darkModeIcon.innerHTML = '<path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>';
         }
-        
         showNotification('Light mode enabled', '🌞');
     } else {
-        // Save current theme and switch to dark
         previousTheme = currentTheme;
         localStorage.setItem('previousTheme', previousTheme);
         body.setAttribute('data-theme', 'dark');
         updateThemeButtons('dark');
         localStorage.setItem('timerTheme', 'dark');
-        
-        // Update icon to sun
         if (darkModeIcon) {
             darkModeIcon.innerHTML = '<path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/>';
         }
-        
         showNotification('Dark mode enabled', '🌙');
     }
-    
-    // Recreate particles for new theme
-    particlesContainer.innerHTML = '';
-    createParticles();
 }
 
-// Helper function to update theme buttons
 function updateThemeButtons(theme) {
     themeBtns.forEach(btn => {
         btn.classList.remove('active');
@@ -256,27 +176,7 @@ function updateThemeButtons(theme) {
 }
 
 // =====================================================
-// PARTICLE ANIMATION SYSTEM
-// =====================================================
-function createParticles() {
-    particlesContainer.innerHTML = '';
-    const particleCount = 15;
-    for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.width = (Math.random() * 15 + 5) + 'px';
-        particle.style.height = particle.style.width;
-        particle.style.animationDelay = (Math.random() * 15) + 's';
-        particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
-        particlesContainer.appendChild(particle);
-    }
-}
-
-createParticles();
-
-// =====================================================
-// CONFETTI ANIMATION
+// CONFETTI (Lightweight - only on completion)
 // =====================================================
 function createConfetti(count = 50) {
     const colors = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#95e1d3', '#f38181', '#aa96da', '#9b7bb8', '#bb86fc'];
@@ -330,14 +230,12 @@ function updateProgressRing(remaining, total) {
 }
 
 function updateStopwatchProgressRing(elapsed) {
-    // For stopwatch, animate based on a 60-second cycle
     const progress = (elapsed % 60) / 60;
     const offset = CIRCUMFERENCE * progress;
     progressRing.style.strokeDashoffset = CIRCUMFERENCE - offset;
 }
 
 function updateBreakProgressRing(remaining, total) {
-    // For break countdown timer
     const progress = remaining / total;
     const offset = CIRCUMFERENCE * (1 - progress);
     progressRing.style.strokeDashoffset = offset;
@@ -366,33 +264,25 @@ function playSound(type = 'complete') {
             frequencies.forEach((freq, index) => {
                 const oscillator = audioContext.createOscillator();
                 const gainNode = audioContext.createGain();
-                
                 oscillator.connect(gainNode);
                 gainNode.connect(audioContext.destination);
-                
                 oscillator.frequency.value = freq;
                 oscillator.type = 'sine';
-                
                 const startTime = audioContext.currentTime + (index * 0.1);
                 gainNode.gain.setValueAtTime(0.15, startTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + 1.5);
-                
                 oscillator.start(startTime);
                 oscillator.stop(startTime + 1.5);
             });
         } else if (type === 'tick') {
             const oscillator = audioContext.createOscillator();
             const gainNode = audioContext.createGain();
-            
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
-            
             oscillator.frequency.value = 800;
             oscillator.type = 'sine';
-            
             gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
             gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-            
             oscillator.start(audioContext.currentTime);
             oscillator.stop(audioContext.currentTime + 0.1);
         } else if (type === 'break') {
@@ -400,33 +290,25 @@ function playSound(type = 'complete') {
             frequencies.forEach((freq, index) => {
                 const oscillator = audioContext.createOscillator();
                 const gainNode = audioContext.createGain();
-                
                 oscillator.connect(gainNode);
                 gainNode.connect(audioContext.destination);
-                
                 oscillator.frequency.value = freq;
                 oscillator.type = 'triangle';
-                
                 const startTime = audioContext.currentTime + (index * 0.15);
                 gainNode.gain.setValueAtTime(0.1, startTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + 2);
-                
                 oscillator.start(startTime);
                 oscillator.stop(startTime + 2);
             });
         } else if (type === 'lap') {
             const oscillator = audioContext.createOscillator();
             const gainNode = audioContext.createGain();
-            
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
-            
             oscillator.frequency.value = 1000;
             oscillator.type = 'sine';
-            
             gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
             gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
-            
             oscillator.start(audioContext.currentTime);
             oscillator.stop(audioContext.currentTime + 0.2);
         }
@@ -469,24 +351,11 @@ function loadStats() {
     const saved = localStorage.getItem('focusTimerStats');
     if (saved) {
         const data = JSON.parse(saved);
-        
-        if (data.daily && data.daily.date === getToday()) {
-            statsState.daily = data.daily;
-        }
-        
-        if (data.weekly && data.weekly.weekStart === getWeekStart()) {
-            statsState.weekly = data.weekly;
-        }
-        
-        if (data.monthly && data.monthly.month === getMonth()) {
-            statsState.monthly = data.monthly;
-        }
-        
-        if (data.allTime) {
-            statsState.allTime = data.allTime;
-        }
+        if (data.daily && data.daily.date === getToday()) statsState.daily = data.daily;
+        if (data.weekly && data.weekly.weekStart === getWeekStart()) statsState.weekly = data.weekly;
+        if (data.monthly && data.monthly.month === getMonth()) statsState.monthly = data.monthly;
+        if (data.allTime) statsState.allTime = data.allTime;
     }
-    
     statsState.daily.date = getToday();
     statsState.weekly.weekStart = getWeekStart();
     statsState.monthly.month = getMonth();
@@ -580,9 +449,7 @@ function renderStats(period = 'daily') {
                 </div>
             </div>
         </div>
-        
         <div class="stats-divider"></div>
-        
         <div class="stats-section">
             <div class="stats-section-title">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -601,9 +468,7 @@ function renderStats(period = 'daily') {
                 </div>
             </div>
         </div>
-        
         <div class="stats-divider"></div>
-        
         <div class="stats-section">
             <div class="stats-section-title">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -642,7 +507,6 @@ function initTripDots() {
         } else if (i === tripState.completed && timerState.mode === 'focus') {
             dot.classList.add('current');
         }
-        
         tripDots.appendChild(dot);
     }
 }
@@ -654,7 +518,6 @@ function updateTripProgress() {
     totalFocusTime.textContent = tripState.totalFocusMinutes;
     totalBreakTime.textContent = tripState.totalBreakMinutes;
     currentStreak.textContent = tripState.streak;
-    
     initTripDots();
 }
 
@@ -674,7 +537,6 @@ function completeFocusSession() {
     
     tripState.streak++;
     addSession();
-    
     saveTripProgress();
     updateTripProgress();
     
@@ -695,7 +557,6 @@ function completeBreakSession() {
         tripState.totalBreakMinutes += breakMinutes;
         addBreakTime(breakMinutes);
     }
-    
     saveTripProgress();
     updateTripProgress();
 }
@@ -715,7 +576,6 @@ function resetTrip() {
     tripState.totalBreakMinutes = 0;
     tripState.focusStartTime = null;
     tripState.breakStartTime = null;
-    
     saveTripProgress();
     updateTripProgress();
     switchToFocusMode();
@@ -724,10 +584,7 @@ function resetTrip() {
 
 function saveTripProgress() {
     const today = new Date().toDateString();
-    const data = {
-        date: today,
-        ...tripState
-    };
+    const data = { date: today, ...tripState };
     localStorage.setItem('tripProgress', JSON.stringify(data));
 }
 
@@ -736,7 +593,6 @@ function loadTripProgress() {
     if (saved) {
         const data = JSON.parse(saved);
         const today = new Date().toDateString();
-        
         if (data.date === today) {
             tripState.completed = data.completed || 0;
             tripState.totalFocusMinutes = data.totalFocusMinutes || 0;
@@ -762,7 +618,6 @@ function startTimer() {
         clearInterval(timerState.intervalId);
         timerState.isRunning = false;
         timerState.isPaused = true;
-        timerCircle.classList.remove('running');
         startBtn.innerHTML = `
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M8 5v14l11-7z"/>
@@ -801,7 +656,6 @@ function startTimer() {
 
     timerState.isRunning = true;
     timerState.isPaused = false;
-    timerCircle.classList.add('running');
 
     startBtn.innerHTML = `
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -825,7 +679,6 @@ function startTimer() {
         if (timerState.remainingSeconds <= 0) {
             clearInterval(timerState.intervalId);
             timerState.isRunning = false;
-            timerCircle.classList.remove('running');
             
             if (timerState.mode === 'focus') {
                 completeFocusSession();
@@ -841,7 +694,6 @@ function startTimer() {
                     breakBtn.classList.add('pulse-active');
                     startBtn.disabled = true;
                 }
-                
                 showBrowserNotification('Focus Complete!', 'Great job! Time for a break.');
             } else {
                 completeBreakSession();
@@ -854,7 +706,6 @@ function startTimer() {
     }, 1000);
 
     updateDisplay();
-    
     const modeText = timerState.mode === 'focus' ? 'Focus session started!' : 'Break started! Relax...';
     const modeIcon = timerState.mode === 'focus' ? '🚀' : '☕';
     showNotification(modeText, modeIcon);
@@ -864,7 +715,6 @@ function resetTimer() {
     clearInterval(timerState.intervalId);
     timerState.isRunning = false;
     timerState.isPaused = false;
-    timerCircle.classList.remove('running');
     
     if (timerState.mode === 'focus') {
         timerState.totalSeconds = parseInt(focusTimeInput.value) * 60 || 25 * 60;
@@ -977,7 +827,6 @@ function updateStopwatchDisplay() {
         timerDigits.textContent = formatTime(stopwatchState.elapsedSeconds);
         updateStopwatchProgressRing(stopwatchState.elapsedSeconds);
     } else {
-        // Break mode - show countdown
         const remaining = stopwatchState.breakTotalSeconds - stopwatchState.breakElapsedSeconds;
         timerDigits.textContent = formatTime(Math.max(0, remaining));
         updateBreakProgressRing(remaining, stopwatchState.breakTotalSeconds);
@@ -995,11 +844,9 @@ function updateStopwatchStats() {
 
 function startStopwatch() {
     if (stopwatchState.isRunning) {
-        // Pause
         clearInterval(stopwatchState.intervalId);
         stopwatchState.isRunning = false;
         stopwatchState.isPaused = true;
-        timerCircle.classList.remove('running');
         
         stopwatchStartBtn.innerHTML = `
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -1014,7 +861,6 @@ function startStopwatch() {
 
     stopwatchState.isRunning = true;
     stopwatchState.isPaused = false;
-    timerCircle.classList.add('running');
     
     stopwatchStartBtn.innerHTML = `
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -1036,13 +882,11 @@ function startStopwatch() {
             stopwatchState.elapsedSeconds++;
             stopwatchState.sessionWorkSeconds++;
         } else {
-            // Break mode - countdown
             stopwatchState.breakElapsedSeconds++;
             stopwatchState.sessionBreakSeconds++;
             
             const remaining = stopwatchState.breakTotalSeconds - stopwatchState.breakElapsedSeconds;
             
-            // Tick animation for last 10 seconds
             if (remaining <= 10 && remaining > 0) {
                 tickAnimation();
                 if (remaining <= 5) {
@@ -1050,7 +894,6 @@ function startStopwatch() {
                 }
             }
             
-            // Break finished
             if (remaining <= 0) {
                 finishStopwatchBreak();
                 return;
@@ -1068,7 +911,6 @@ function startStopwatch() {
 function resetStopwatch() {
     clearInterval(stopwatchState.intervalId);
     
-    // Save accumulated time before reset
     if (stopwatchState.sessionWorkSeconds > 0) {
         addStopwatchWorkTime(Math.floor(stopwatchState.sessionWorkSeconds / 60));
     }
@@ -1087,11 +929,8 @@ function resetStopwatch() {
     stopwatchState.sessionBreakSeconds = 0;
     stopwatchState.mode = 'work';
     
-    timerCircle.classList.remove('running');
     progressRing.classList.remove('stopwatch-break');
     progressRing.classList.add('stopwatch');
-    
-    // Remove on-break class from tracker
     stopwatchTracker.classList.remove('on-break');
     
     stopwatchStartBtn.innerHTML = `
@@ -1174,20 +1013,14 @@ function takeStopwatchBreak() {
         return;
     }
     
-    // Stop the current interval
     clearInterval(stopwatchState.intervalId);
-    
-    // Save current elapsed time
     stopwatchState.savedElapsedSeconds = stopwatchState.elapsedSeconds;
-    
-    // Switch to break mode
     stopwatchState.mode = 'break';
     stopwatchState.breakElapsedSeconds = 0;
-    stopwatchState.breakTotalSeconds = 20 * 60; // 20 minutes break
+    stopwatchState.breakTotalSeconds = 20 * 60;
     stopwatchState.isRunning = false;
     stopwatchState.isPaused = false;
     
-    // Update UI
     modeIndicator.textContent = 'Stopwatch Break';
     modeIndicator.classList.remove('stopwatch');
     modeIndicator.classList.add('stopwatch-break');
@@ -1197,11 +1030,8 @@ function takeStopwatchBreak() {
     
     timerLabel.textContent = 'Break Remaining';
     stopwatchStatus.textContent = 'Break Time';
-    
-    // Add on-break class to tracker for styling
     stopwatchTracker.classList.add('on-break');
     
-    // Update buttons
     stopwatchBreakBtn.style.display = 'none';
     stopwatchResumeBtn.style.display = 'inline-flex';
     lapBtn.disabled = true;
@@ -1212,7 +1042,6 @@ function takeStopwatchBreak() {
         </svg>
         Start Break`;
     
-    // Update display to show break countdown
     updateStopwatchDisplay();
     
     playSound('break');
@@ -1220,19 +1049,13 @@ function takeStopwatchBreak() {
 }
 
 function finishStopwatchBreak() {
-    // Break countdown finished
     clearInterval(stopwatchState.intervalId);
     stopwatchState.isRunning = false;
     
-    // Add break time to session
-    const breakMinutes = Math.floor(stopwatchState.breakElapsedSeconds / 60);
-    
-    // Switch back to work mode
     stopwatchState.mode = 'work';
-    stopwatchState.elapsedSeconds = stopwatchState.savedElapsedSeconds; // Restore saved time
+    stopwatchState.elapsedSeconds = stopwatchState.savedElapsedSeconds;
     stopwatchState.breakElapsedSeconds = 0;
     
-    // Update UI
     modeIndicator.textContent = 'Stopwatch Mode';
     modeIndicator.classList.remove('stopwatch-break');
     modeIndicator.classList.add('stopwatch');
@@ -1242,11 +1065,8 @@ function finishStopwatchBreak() {
     
     timerLabel.textContent = 'Elapsed Time';
     stopwatchStatus.textContent = 'Ready';
-    
-    // Remove on-break class from tracker
     stopwatchTracker.classList.remove('on-break');
     
-    // Update buttons
     stopwatchBreakBtn.style.display = 'inline-flex';
     stopwatchBreakBtn.disabled = true;
     stopwatchResumeBtn.style.display = 'none';
@@ -1257,9 +1077,6 @@ function finishStopwatchBreak() {
         </svg>
         Resume`;
     
-    timerCircle.classList.remove('running');
-    
-    // Update display
     updateStopwatchDisplay();
     updateStopwatchStats();
     
@@ -1272,22 +1089,18 @@ function finishStopwatchBreak() {
 function resumeStopwatchWork() {
     if (stopwatchState.mode === 'work') return;
     
-    // Stop break timer if running
     clearInterval(stopwatchState.intervalId);
     
-    // Add partial break time to session
     if (stopwatchState.breakElapsedSeconds > 0) {
         stopwatchState.sessionBreakSeconds += stopwatchState.breakElapsedSeconds;
     }
     
-    // Switch back to work mode
     stopwatchState.mode = 'work';
-    stopwatchState.elapsedSeconds = stopwatchState.savedElapsedSeconds; // Restore saved time
+    stopwatchState.elapsedSeconds = stopwatchState.savedElapsedSeconds;
     stopwatchState.breakElapsedSeconds = 0;
     stopwatchState.isRunning = false;
     stopwatchState.isPaused = false;
     
-    // Update UI
     modeIndicator.textContent = 'Stopwatch Mode';
     modeIndicator.classList.remove('stopwatch-break');
     modeIndicator.classList.add('stopwatch');
@@ -1297,11 +1110,8 @@ function resumeStopwatchWork() {
     
     timerLabel.textContent = 'Elapsed Time';
     stopwatchStatus.textContent = 'Ready';
-    
-    // Remove on-break class from tracker
     stopwatchTracker.classList.remove('on-break');
     
-    // Update buttons
     stopwatchBreakBtn.style.display = 'inline-flex';
     stopwatchBreakBtn.disabled = true;
     stopwatchResumeBtn.style.display = 'none';
@@ -1312,9 +1122,6 @@ function resumeStopwatchWork() {
         </svg>
         Resume`;
     
-    timerCircle.classList.remove('running');
-    
-    // Update display
     updateStopwatchDisplay();
     updateStopwatchStats();
     
@@ -1327,18 +1134,15 @@ function resumeStopwatchWork() {
 function switchToTimerMode() {
     appMode = 'timer';
     
-    // Stop stopwatch if running
     if (stopwatchState.isRunning) {
         clearInterval(stopwatchState.intervalId);
         stopwatchState.isRunning = false;
         stopwatchState.isPaused = true;
     }
     
-    // Update tabs
     timerModeTab.classList.add('active');
     stopwatchModeTab.classList.remove('active');
     
-    // Show/hide elements
     tripTracker.style.display = 'block';
     stopwatchTracker.style.display = 'none';
     inputSection.style.display = 'block';
@@ -1346,7 +1150,6 @@ function switchToTimerMode() {
     stopwatchButtonGroup.style.display = 'none';
     lapTimesContainer.style.display = 'none';
     
-    // Update mode indicator
     if (timerState.mode === 'focus') {
         modeIndicator.textContent = 'Focus Mode';
         modeIndicator.className = 'mode-indicator focus';
@@ -1355,7 +1158,6 @@ function switchToTimerMode() {
         modeIndicator.className = 'mode-indicator break';
     }
     
-    // Reset progress ring class
     progressRing.classList.remove('stopwatch', 'stopwatch-break');
     if (timerState.mode === 'break') {
         progressRing.classList.add('break');
@@ -1363,7 +1165,6 @@ function switchToTimerMode() {
         progressRing.classList.remove('break');
     }
     
-    // Update display
     updateDisplay();
     timerLabel.textContent = timerState.mode === 'focus' ? 'Focus Time' : 'Break Time';
 }
@@ -1371,25 +1172,21 @@ function switchToTimerMode() {
 function switchToStopwatchMode() {
     appMode = 'stopwatch';
     
-    // Stop timer if running
     if (timerState.isRunning) {
         clearInterval(timerState.intervalId);
         timerState.isRunning = false;
         timerState.isPaused = true;
     }
     
-    // Update tabs
     timerModeTab.classList.remove('active');
     stopwatchModeTab.classList.add('active');
     
-    // Show/hide elements
     tripTracker.style.display = 'none';
     stopwatchTracker.style.display = 'block';
     inputSection.style.display = 'none';
     timerButtonGroup.style.display = 'none';
     stopwatchButtonGroup.style.display = 'flex';
     
-    // Update mode indicator based on stopwatch state
     if (stopwatchState.mode === 'work') {
         modeIndicator.textContent = 'Stopwatch Mode';
         modeIndicator.className = 'mode-indicator stopwatch';
@@ -1404,11 +1201,8 @@ function switchToStopwatchMode() {
         stopwatchTracker.classList.add('on-break');
     }
     
-    // Update display
     updateStopwatchDisplay();
     timerLabel.textContent = stopwatchState.mode === 'work' ? 'Elapsed Time' : 'Break Remaining';
-    
-    // Show lap times if any
     renderLapTimes();
 }
 
@@ -1425,7 +1219,6 @@ function changeTheme(theme) {
         }
     });
     
-    // Update dark mode icon based on theme
     const darkModeIcon = document.getElementById('darkModeIcon');
     if (darkModeIcon) {
         if (theme === 'dark') {
@@ -1435,14 +1228,10 @@ function changeTheme(theme) {
         }
     }
     
-    // Save previous theme if not dark
     if (theme !== 'dark') {
         previousTheme = theme;
         localStorage.setItem('previousTheme', theme);
     }
-    
-    particlesContainer.innerHTML = '';
-    createParticles();
     
     localStorage.setItem('timerTheme', theme);
     showNotification(`Theme: ${theme.charAt(0).toUpperCase() + theme.slice(1)}`, '🎨');
@@ -1559,7 +1348,6 @@ statsBtn.addEventListener('click', () => {
     statsModalOverlay.classList.add('show');
 });
 
-// Dark mode toggle button
 if (darkModeBtn) {
     darkModeBtn.addEventListener('click', toggleDarkMode);
 }
@@ -1702,7 +1490,6 @@ document.addEventListener('keydown', (e) => {
             }
             break;
         case 'KeyT':
-            // Toggle between timer and stopwatch modes
             if (appMode === 'timer') {
                 switchToStopwatchMode();
             } else {
@@ -1710,18 +1497,16 @@ document.addEventListener('keydown', (e) => {
             }
             break;
         case 'KeyI':
-            // Show stats
             renderStats('daily');
             statsModalOverlay.classList.add('show');
             break;
         case 'KeyD':
-            // Toggle dark mode
             toggleDarkMode();
             break;
         case 'Escape':
-            // Close any open modals
             modalOverlay.classList.remove('show');
             statsModalOverlay.classList.remove('show');
+            helpModalOverlay.classList.remove('show');
             break;
     }
 });
@@ -1747,7 +1532,6 @@ document.addEventListener('visibilitychange', () => {
             if (timerState.remainingSeconds <= 0) {
                 clearInterval(timerState.intervalId);
                 timerState.isRunning = false;
-                timerCircle.classList.remove('running');
                 timerState.remainingSeconds = 0;
                 
                 if (timerState.mode === 'focus') {
@@ -1772,25 +1556,21 @@ document.addEventListener('visibilitychange', () => {
                     switchToFocusMode();
                 }
             }
-            
             updateDisplay();
         } else if (appMode === 'stopwatch' && stopwatchState.isRunning) {
             if (stopwatchState.mode === 'work') {
                 stopwatchState.elapsedSeconds += elapsedSeconds;
                 stopwatchState.sessionWorkSeconds += elapsedSeconds;
             } else {
-                // Break mode
                 stopwatchState.breakElapsedSeconds += elapsedSeconds;
                 stopwatchState.sessionBreakSeconds += elapsedSeconds;
                 
-                // Check if break is finished
                 const remaining = stopwatchState.breakTotalSeconds - stopwatchState.breakElapsedSeconds;
                 if (remaining <= 0) {
                     finishStopwatchBreak();
                     return;
                 }
             }
-            
             updateStopwatchDisplay();
             updateStopwatchStats();
         }
@@ -1847,11 +1627,48 @@ timerCircle.addEventListener('dblclick', () => {
 });
 
 // =====================================================
+// HELP MODAL
+// =====================================================
+const helpBtn = document.getElementById('helpBtn');
+const helpModalOverlay = document.getElementById('helpModalOverlay');
+const helpCloseBtn = document.getElementById('helpCloseBtn');
+
+if (helpBtn) {
+    helpBtn.addEventListener('click', () => {
+        helpModalOverlay.classList.add('show');
+    });
+}
+
+if (helpCloseBtn) {
+    helpCloseBtn.addEventListener('click', () => {
+        helpModalOverlay.classList.remove('show');
+    });
+}
+
+if (helpModalOverlay) {
+    helpModalOverlay.addEventListener('click', (e) => {
+        if (e.target === helpModalOverlay) {
+            helpModalOverlay.classList.remove('show');
+        }
+    });
+}
+
+// Add '?' key to open help
+document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT') return;
+    
+    if (e.key === '?' || (e.shiftKey && e.code === 'Slash')) {
+        e.preventDefault();
+        helpModalOverlay.classList.add('show');
+    }
+});
+
+// =====================================================
 // INITIALIZATION
 // =====================================================
 function init() {
     // Load saved theme
-    const savedTheme = localStorage.getItem('timerTheme') || 'dark'; // Default to dark theme
+    const savedTheme = localStorage.getItem('timerTheme') || 'violet';
     const savedPreviousTheme = localStorage.getItem('previousTheme') || 'violet';
     previousTheme = savedPreviousTheme;
     
@@ -1915,398 +1732,49 @@ function init() {
     // Initialize stopwatch break button state
     stopwatchBreakBtn.disabled = true;
 
-    // Show welcome message with keyboard shortcuts hint
+    // Show welcome message
     setTimeout(() => {
-        showNotification('Welcome! Space=Start, D=Dark Mode, I=Stats', '👋');
+        showNotification('Welcome! Press Space to start, ? for shortcuts', '👋');
     }, 800);
 }
-
 // =====================================================
-// ADVANCED BACKGROUND ANIMATIONS
+// REAL-TIME CLOCK (12-Hour Format)
 // =====================================================
-
-// Create Stars
-function createStars() {
-    const container = document.getElementById('starsContainer');
-    if (!container) return;
-    container.innerHTML = '';
+function updateClock() {
+    const now = new Date();
     
-    for (let i = 0; i < 150; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        star.style.left = Math.random() * 100 + '%';
-        star.style.top = Math.random() * 100 + '%';
-        star.style.width = (Math.random() * 3 + 1) + 'px';
-        star.style.height = star.style.width;
-        star.style.animationDelay = Math.random() * 3 + 's';
-        star.style.animationDuration = (Math.random() * 2 + 2) + 's';
-        container.appendChild(star);
-    }
+    // 12-hour format
+    let hours = now.getHours();
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    const hoursStr = String(hours).padStart(2, '0');
+    
+    const timeString = `${hoursStr}:${minutes}:${seconds} ${ampm}`;
+    
+    // Format date - Full day and month names
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const dayName = days[now.getDay()];
+    const monthName = months[now.getMonth()];
+    const date = now.getDate();
+    const dateString = `${dayName}, ${monthName} ${date}`;
+    
+    // Update Timer mode clock
+    if (currentTimeEl) currentTimeEl.textContent = timeString;
+    if (currentDateEl) currentDateEl.textContent = dateString;
+    
+    // Update Stopwatch mode clock
+    if (swCurrentTimeEl) swCurrentTimeEl.textContent = timeString;
+    if (swCurrentDateEl) swCurrentDateEl.textContent = dateString;
 }
 
-// Create Matrix Rain
-function createMatrix() {
-    const container = document.getElementById('matrixContainer');
-    if (!container) return;
-    container.innerHTML = '';
-    
-    const columnCount = Math.floor(window.innerWidth / 20);
-    const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-    
-    for (let i = 0; i < columnCount; i++) {
-        const column = document.createElement('div');
-        column.className = 'matrix-column';
-        column.style.left = (i * 20) + 'px';
-        column.style.animationDuration = (Math.random() * 10 + 5) + 's';
-        column.style.animationDelay = Math.random() * 5 + 's';
-        
-        let text = '';
-        const charCount = Math.floor(Math.random() * 20 + 10);
-        for (let j = 0; j < charCount; j++) {
-            text += chars[Math.floor(Math.random() * chars.length)] + '<br>';
-        }
-        column.innerHTML = text;
-        container.appendChild(column);
-    }
-}
-
-// Create Hexagon Grid
-function createHexagons() {
-    const container = document.getElementById('hexagonContainer');
-    if (!container) return;
-    container.innerHTML = '';
-    
-    const hexSize = 70;
-    const cols = Math.ceil(window.innerWidth / (hexSize * 1.5)) + 2;
-    const rows = Math.ceil(window.innerHeight / (hexSize * 0.866)) + 2;
-    
-    for (let row = 0; row < rows; row++) {
-        for (let col = 0; col < cols; col++) {
-            const hex = document.createElement('div');
-            hex.className = 'hexagon';
-            const offsetX = row % 2 === 0 ? 0 : hexSize * 0.75;
-            hex.style.left = (col * hexSize * 1.5 + offsetX) + 'px';
-            hex.style.top = (row * hexSize * 0.866) + 'px';
-            hex.style.animationDelay = (Math.random() * 4) + 's';
-            container.appendChild(hex);
-        }
-    }
-}
-
-// Create Rain
-function createRain() {
-    const container = document.getElementById('rainContainer');
-    if (!container) return;
-    container.innerHTML = '';
-    
-    const dropCount = 100;
-    for (let i = 0; i < dropCount; i++) {
-        const drop = document.createElement('div');
-        drop.className = 'rain-drop';
-        drop.style.left = Math.random() * 100 + '%';
-        drop.style.animationDuration = (Math.random() * 1 + 0.5) + 's';
-        drop.style.animationDelay = Math.random() * 2 + 's';
-        drop.style.height = (Math.random() * 20 + 10) + 'px';
-        container.appendChild(drop);
-    }
-}
-
-// Create Fireflies
-function createFireflies() {
-    const container = document.getElementById('firefliesContainer');
-    if (!container) return;
-    container.innerHTML = '';
-    
-    const fireflyCount = 30;
-    for (let i = 0; i < fireflyCount; i++) {
-        const firefly = document.createElement('div');
-        firefly.className = 'firefly';
-        firefly.style.left = Math.random() * 100 + '%';
-        firefly.style.top = Math.random() * 100 + '%';
-        firefly.style.animationDelay = Math.random() * 15 + 's';
-        firefly.style.animationDuration = (Math.random() * 10 + 10) + 's';
-        container.appendChild(firefly);
-    }
-}
-
-// Create DNA Helix
-function createDNA() {
-    const container = document.getElementById('dnaContainer');
-    if (!container) return;
-    container.innerHTML = '';
-    
-    const helix = document.createElement('div');
-    helix.className = 'dna-helix';
-    
-    const strandCount = 40;
-    for (let i = 0; i < strandCount; i++) {
-        const strand = document.createElement('div');
-        strand.className = 'dna-strand';
-        strand.style.top = (i * 25) + 'px';
-        strand.style.animationDelay = (i * 0.1) + 's';
-        helix.appendChild(strand);
-    }
-    
-    container.appendChild(helix);
-}
-
-// Create Circuit Board
-function createCircuit() {
-    const container = document.getElementById('circuitContainer');
-    if (!container) return;
-    container.innerHTML = '';
-    
-    // Create horizontal lines
-    for (let i = 0; i < 15; i++) {
-        const line = document.createElement('div');
-        line.className = 'circuit-line horizontal';
-        line.style.top = (i * 7) + '%';
-        line.style.left = Math.random() * 30 + '%';
-        line.style.width = (Math.random() * 40 + 20) + '%';
-        line.style.animationDelay = Math.random() * 3 + 's';
-        container.appendChild(line);
-    }
-    
-    // Create vertical lines
-    for (let i = 0; i < 15; i++) {
-        const line = document.createElement('div');
-        line.className = 'circuit-line vertical';
-        line.style.left = (i * 7) + '%';
-        line.style.top = Math.random() * 30 + '%';
-        line.style.height = (Math.random() * 40 + 20) + '%';
-        line.style.animationDelay = Math.random() * 3 + 's';
-        container.appendChild(line);
-    }
-    
-    // Create nodes
-    for (let i = 0; i < 20; i++) {
-        const node = document.createElement('div');
-        node.className = 'circuit-node';
-        node.style.left = Math.random() * 90 + 5 + '%';
-        node.style.top = Math.random() * 90 + 5 + '%';
-        node.style.animationDelay = Math.random() * 2 + 's';
-        container.appendChild(node);
-    }
-}
-
-// Create Constellation / Particle Network
-function createConstellation() {
-    const canvas = document.getElementById('constellationCanvas');
-    if (!canvas) return;
-    
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    
-    const particles = [];
-    const particleCount = 80;
-    const connectionDistance = 150;
-    
-    // Get theme color
-    const style = getComputedStyle(document.body);
-    const primaryColor = style.getPropertyValue('--primary').trim() || '#bb86fc';
-    
-    // Create particles
-    for (let i = 0; i < particleCount; i++) {
-        particles.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            vx: (Math.random() - 0.5) * 0.5,
-            vy: (Math.random() - 0.5) * 0.5,
-            radius: Math.random() * 2 + 1
-        });
-    }
-    
-    function animate() {
-        if (!document.body.classList.contains('fullscreen') || 
-            !document.body.classList.contains('anim-constellation')) {
-            requestAnimationFrame(animate);
-            return;
-        }
-        
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        // Update and draw particles
-        particles.forEach((p, i) => {
-            // Move
-            p.x += p.vx;
-            p.y += p.vy;
-            
-            // Bounce off edges
-            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-            
-            // Draw particle
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-            ctx.fillStyle = primaryColor;
-            ctx.fill();
-            
-            // Draw connections
-            for (let j = i + 1; j < particles.length; j++) {
-                const p2 = particles[j];
-                const dx = p.x - p2.x;
-                const dy = p.y - p2.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                if (distance < connectionDistance) {
-                    ctx.beginPath();
-                    ctx.moveTo(p.x, p.y);
-                    ctx.lineTo(p2.x, p2.y);
-                    ctx.strokeStyle = primaryColor;
-                    ctx.globalAlpha = 1 - (distance / connectionDistance);
-                    ctx.lineWidth = 0.5;
-                    ctx.stroke();
-                    ctx.globalAlpha = 1;
-                }
-            }
-        });
-        
-        requestAnimationFrame(animate);
-    }
-    
-    animate();
-}
-
-// Animation change handler
-const animBtns = document.querySelectorAll('.anim-btn');
-let currentAnimation = 'aurora';
-
-function changeAnimation(anim) {
-    currentAnimation = anim;
-    
-    // Remove all animation classes
-    const animClasses = [
-        'anim-aurora', 'anim-orbs', 'anim-stars', 'anim-waves',
-        'anim-matrix', 'anim-pulse', 'anim-grid', 'anim-mesh',
-        'anim-bokeh', 'anim-neon', 'anim-constellation', 'anim-geometric',
-        'anim-liquid', 'anim-cyber', 'anim-smoke', 'anim-hexagon',
-        'anim-rain', 'anim-dna', 'anim-glitch', 'anim-vortex',
-        'anim-fireflies', 'anim-northern', 'anim-circuit'
-    ];
-    
-    animClasses.forEach(cls => document.body.classList.remove(cls));
-    
-    // Add selected animation class
-    document.body.classList.add(`anim-${anim}`);
-    
-    // Update buttons
-    animBtns.forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.dataset.anim === anim) {
-            btn.classList.add('active');
-        }
-    });
-    
-    // Create dynamic elements based on animation
-    switch(anim) {
-        case 'stars':
-            createStars();
-            break;
-        case 'matrix':
-            createMatrix();
-            break;
-        case 'hexagon':
-            createHexagons();
-            break;
-        case 'rain':
-            createRain();
-            break;
-        case 'fireflies':
-            createFireflies();
-            break;
-        case 'dna':
-            createDNA();
-            break;
-        case 'circuit':
-            createCircuit();
-            break;
-        case 'constellation':
-            createConstellation();
-            break;
-    }
-    
-    localStorage.setItem('timerAnimation', anim);
-    showNotification(`Animation: ${anim.charAt(0).toUpperCase() + anim.slice(1)}`, '✨');
-}
-
-// Event listeners for animation buttons
-animBtns.forEach(btn => {
-    btn.addEventListener('click', () => changeAnimation(btn.dataset.anim));
-});
-
-// Load saved animation
-function loadAnimation() {
-    const savedAnim = localStorage.getItem('timerAnimation') || 'aurora';
-    currentAnimation = savedAnim;
-    document.body.classList.add(`anim-${savedAnim}`);
-    
-    animBtns.forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.dataset.anim === savedAnim) {
-            btn.classList.add('active');
-        }
-    });
-    
-    // Pre-create elements
-    createStars();
-    createMatrix();
-    createHexagons();
-    createRain();
-    createFireflies();
-    createDNA();
-    createCircuit();
-    
-    // Start constellation animation
-    setTimeout(createConstellation, 100);
-}
-
-// Initialize animations
-loadAnimation();
-
-// Handle resize
-window.addEventListener('resize', () => {
-    createMatrix();
-    createHexagons();
-    createRain();
-    createConstellation();
-});
-// =====================================================
-// HELP MODAL
-// =====================================================
-const helpBtn = document.getElementById('helpBtn');
-const helpModalOverlay = document.getElementById('helpModalOverlay');
-const helpCloseBtn = document.getElementById('helpCloseBtn');
-
-if (helpBtn) {
-    helpBtn.addEventListener('click', () => {
-        helpModalOverlay.classList.add('show');
-    });
-}
-
-if (helpCloseBtn) {
-    helpCloseBtn.addEventListener('click', () => {
-        helpModalOverlay.classList.remove('show');
-    });
-}
-
-if (helpModalOverlay) {
-    helpModalOverlay.addEventListener('click', (e) => {
-        if (e.target === helpModalOverlay) {
-            helpModalOverlay.classList.remove('show');
-        }
-    });
-}
-
-// Add '?' key to open help
-document.addEventListener('keydown', (e) => {
-    if (e.target.tagName === 'INPUT') return;
-    
-    if (e.key === '?' || (e.shiftKey && e.code === 'Slash')) {
-        e.preventDefault();
-        helpModalOverlay.classList.add('show');
-    }
-});
+// Start clock - call immediately and every second
+updateClock();
+setInterval(updateClock, 1000);
 
 // Run initialization
 init();
