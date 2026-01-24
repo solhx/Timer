@@ -4,6 +4,7 @@
 :root {
     --primary-light: #2d2d3a;
     --primary: #bb86fc;
+    --primary-rgb: 187, 134, 252;
     --primary-dark: #9a67ea;
     --accent: #cf6679;
     --background-start: #121212;
@@ -1938,121 +1939,236 @@ body.fullscreen .timer-digits.style-display {
 }
 
 /* =====================================================
-   MODERN FULLSCREEN BACKGROUND ANIMATIONS
+   STATS MODAL ICONS ANIMATION
    ===================================================== */
-.bg-animation-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: opacity 0.5s ease;
+@keyframes statsIconPulse {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2) rotate(5deg);
+        opacity: 0.8;
+    }
 }
 
-/* Show only in fullscreen */
-body.fullscreen .bg-animation-container {
-    opacity: 1;
+.stats-section-title svg {
+    fill: var(--primary);
+    animation: statsIconPulse 3s ease-in-out infinite;
 }
 
-/* Floating Gradient Orbs - GPU Accelerated */
-.floating-gradient {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.4;
-    will-change: transform;
-    animation: floatGradient 20s ease-in-out infinite;
-}
-
-.floating-gradient-1 {
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
-    top: -20%;
-    left: -10%;
+.stats-section:nth-child(2) .stats-section-title svg {
     animation-delay: 0s;
 }
 
-.floating-gradient-2 {
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-    bottom: -20%;
-    right: -10%;
-    animation-delay: -7s;
-    animation-duration: 25s;
+.stats-section:nth-child(4) .stats-section-title svg {
+    animation-delay: 1.5s;
 }
 
-.floating-gradient-3 {
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, var(--primary-dark) 0%, transparent 70%);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    animation-delay: -14s;
-    animation-duration: 30s;
+/* =====================================================
+   STATS MODAL ENTRANCE ANIMATIONS
+   ===================================================== */
+.stats-modal .modal-icon {
+    animation: iconBounce 1s ease infinite;
 }
 
-@keyframes floatGradient {
+@keyframes iconBounce {
     0%, 100% {
-        transform: translate(0, 0) scale(1);
-    }
-    25% {
-        transform: translate(50px, -30px) scale(1.1);
+        transform: translateY(0);
     }
     50% {
-        transform: translate(-30px, 50px) scale(0.9);
-    }
-    75% {
-        transform: translate(30px, 30px) scale(1.05);
+        transform: translateY(-10px);
     }
 }
 
-/* Subtle Grid Overlay in Fullscreen */
-body.fullscreen::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: 
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.5;
+.stats-card {
+    background: var(--primary-light);
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    animation: cardFadeIn 0.5s ease forwards;
+    opacity: 0;
+    transform: translateY(20px);
 }
 
-/* Vignette Effect in Fullscreen */
-body.fullscreen::after {
+.stats-card:nth-child(1) { animation-delay: 0.1s; }
+.stats-card:nth-child(2) { animation-delay: 0.2s; }
+.stats-card:nth-child(3) { animation-delay: 0.3s; }
+.stats-card:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes cardFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.stats-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px var(--glow);
+}
+
+.stats-card-value {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--primary);
+    text-shadow: 0 0 15px var(--glow);
+    transition: all 0.3s ease;
+}
+
+.stats-card:hover .stats-card-value {
+    transform: scale(1.1);
+}
+
+/* =====================================================
+   WEEKLY STATS CARD SPECIAL ANIMATION
+   ===================================================== */
+.weekly-refresh-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, var(--success), var(--success-dark));
+    color: white;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    margin-bottom: 15px;
+    animation: pulseIndicator 2s ease-in-out infinite;
+}
+
+@keyframes pulseIndicator {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(3, 218, 198, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(3, 218, 198, 0);
+    }
+}
+
+.weekly-refresh-indicator svg {
+    width: 14px;
+    height: 14px;
+    fill: white;
+    animation: refreshSpin 2s linear infinite;
+}
+
+@keyframes refreshSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* =====================================================
+   STATS CHART BARS ANIMATION
+   ===================================================== */
+.stats-bar-chart {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 8px;
+    height: 80px;
+    margin: 15px 0;
+    padding: 10px;
+    background: var(--primary-light);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.stats-bar {
+    width: 30px;
+    background: linear-gradient(180deg, var(--primary), var(--primary-dark));
+    border-radius: 6px 6px 0 0;
+    transition: height 0.5s ease;
+    position: relative;
+    animation: barGrow 0.8s ease forwards;
+    opacity: 0;
+}
+
+.stats-bar:nth-child(1) { height: 40px; animation-delay: 0.1s; }
+.stats-bar:nth-child(2) { height: 60px; animation-delay: 0.2s; }
+.stats-bar:nth-child(3) { height: 80px; animation-delay: 0.3s; }
+.stats-bar:nth-child(4) { height: 50px; animation-delay: 0.4s; }
+.stats-bar:nth-child(5) { height: 70px; animation-delay: 0.5s; }
+.stats-bar:nth-child(6) { height: 45px; animation-delay: 0.6s; }
+.stats-bar:nth-child(7) { height: 65px; animation-delay: 0.7s; }
+
+@keyframes barGrow {
+    from {
+        opacity: 0;
+        transform: scaleY(0);
+    }
+    to {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+}
+
+.stats-bar::after {
+    content: attr(data-day);
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+}
+
+/* =====================================================
+   PERIOD TAB ACTIVE ANIMATION
+   ===================================================== */
+.period-tab {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: var(--font-modern);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.period-tab::before {
     content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(
-        ellipse at center,
-        transparent 0%,
-        transparent 40%,
-        rgba(0, 0, 0, 0.3) 100%
-    );
-    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: var(--primary);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
     z-index: 0;
 }
 
-/* Container above background */
-body.fullscreen .container {
+.period-tab:hover::before {
+    width: 150px;
+    height: 150px;
+}
+
+.period-tab span {
     position: relative;
     z-index: 1;
 }
+
+.period-tab.active {
+    background: var(--card-bg);
+    color: var(--primary);
+    box-shadow: 0 2px 10px var(--shadow), 0 0 15px var(--glow);
+}
+
+.period-tab.active::before {
+    display: none;
+}
+
+/* =====================================================
+   RESPONSIVE CLOCK
+   ===================================================== */
 
 /* =====================================================
    RESPONSIVE CLOCK

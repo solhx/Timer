@@ -344,6 +344,52 @@ function getMonth() {
     return `${now.getFullYear()}-${now.getMonth() + 1}`;
 }
 
+function isFriday() {
+    return new Date().getDay() === 5;
+}
+
+function getLastFridayRefresh() {
+    return localStorage.getItem('lastFridayRefresh');
+}
+
+function setLastFridayRefresh() {
+    localStorage.setItem('lastFridayRefresh', new Date().toDateString());
+}
+
+// =====================================================
+// WEEKLY STATS REFRESH ON FRIDAY
+// =====================================================
+function checkAndRefreshWeeklyStats() {
+    const today = new Date().toDateString();
+    const lastRefresh = getLastFridayRefresh();
+    
+    // If it's Friday and we haven't refreshed this Friday yet
+    if (isFriday() && lastRefresh !== today) {
+        // Clear weekly stats
+        statsState.weekly = {
+            weekStart: getWeekStart(),
+            focusMinutes: 0,
+            breakMinutes: 0,
+            stopwatchWorkMinutes: 0,
+            stopwatchBreakMinutes: 0,
+            sessions: 0,
+            trips: 0
+        };
+        
+        saveStats();
+        setLastFridayRefresh();
+        showNotification('Weekly statistics refreshed! 📊', '🔄');
+        
+        // If stats modal is open, refresh the display
+        if (statsModalOverlay.classList.contains('show')) {
+            const activeTab = document.querySelector('.period-tab.active');
+            if (activeTab && activeTab.dataset.period === 'weekly') {
+                renderStats('weekly');
+            }
+        }
+    }
+}
+
 // =====================================================
 // STATISTICS FUNCTIONS
 // =====================================================
@@ -426,7 +472,37 @@ function renderStats(period = 'daily') {
         case 'allTime': periodLabel = 'All Time'; break;
     }
     
+    // Check if it's Friday for weekly tab
+    let weeklyIndicator = '';
+    if (period === 'weekly' && isFriday()) {
+        weeklyIndicator = `
+            <div class="weekly-refresh-indicator">
+                <svg viewBox="0 0 24 24">
+                    <path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                </svg>
+                Refreshes Friday
+            </div>
+        `;
+    }
+    
+    // Generate chart bars based on period
+    let chartBars = '';
+    if (period === 'weekly') {
+        chartBars = `
+            <div class="stats-bar-chart">
+                <div class="stats-bar" data-day="M"></div>
+                <div class="stats-bar" data-day="T"></div>
+                <div class="stats-bar" data-day="W"></div>
+                <div class="stats-bar" data-day="T"></div>
+                <div class="stats-bar" data-day="F"></div>
+                <div class="stats-bar" data-day="S"></div>
+                <div class="stats-bar" data-day="S"></div>
+            </div>
+        `;
+    }
+    
     statsContent.innerHTML = `
+        ${weeklyIndicator}
         <div class="stats-section">
             <div class="stats-section-title">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -434,6 +510,7 @@ function renderStats(period = 'daily') {
                 </svg>
                 ${periodLabel} Overview
             </div>
+            ${chartBars}
             <div class="stats-grid">
                 <div class="stats-card full-width">
                     <div class="stats-card-value">${formatMinutes(totalFocus + totalBreak)}</div>
@@ -1731,6 +1808,9 @@ function init() {
     
     // Initialize stopwatch break button state
     stopwatchBreakBtn.disabled = true;
+
+    // Check and refresh weekly stats if it's Friday
+    checkAndRefreshWeeklyStats();
 
     // Show welcome message
     setTimeout(() => {
